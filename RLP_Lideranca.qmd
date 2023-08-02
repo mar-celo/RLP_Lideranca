@@ -1,0 +1,710 @@
+---
+title: "RLP_Lideranca"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, error = FALSE, warning = FALSE)
+```
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+```{r}
+library(tidyverse)
+library(readxl)
+df <- read_excel("data/BaseDados_20230720.xlsx", 
+    sheet = "Base_jun23")
+
+De_Para <- read_excel("data/RLP_Lideranca_20230720.xlsx", 
+    sheet = "DE-PARA")
+
+left_join(df, De_Para, by = c("SUBNÍVEL FUNÇÃO" = "funcao_sbnvl_no"))
+
+df <- df |> left_join(De_Para, by = c("SUBNÍVEL FUNÇÃO" = "funcao_sbnvl_no")) 
+
+
+df_19 <- read_excel("data/BaseDados_20230720.xlsx", 
+    sheet = "Base_jun19")
+
+df_19 <- df_19 |> left_join(De_Para, by = c("SUBNÍVEL FUNÇÃO" = "funcao_sbnvl_no")) 
+
+df_pcd <- read_excel("data/RLP_Lideranca_20230720.xlsx", 
+    sheet = "Base_PCD")
+```
+
+
+```{r, 3.1}
+
+tab_3.1 <- df |> group_by(EQUIVALENCIA) |> 
+  count(SEXO) |> 
+  dplyr::mutate(
+    Total = ifelse(
+      SEXO == 'Mas', n * -1, n
+      )
+  ) |> rename(
+    Cargo = EQUIVALENCIA,
+    Sexo = SEXO
+  )
+  
+
+grafico_3.1 <- tab_3.1 %>%
+  ggplot(aes(
+    x = Cargo,
+    y = Total,
+    fill = Sexo
+  )
+  ) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = c("#ffaf51", "#004580")) +
+  scale_y_continuous(breaks=seq(-7000,7000,2500),
+                     limits = c(-7000, 8000),                     labels=paste0(abs(seq(-7000,7000,2500))))+
+  coord_flip()+
+  labs(
+    title = "Gráfico 1 – Quantitativo de ocupantes de cargos de liderança em jun/2023",
+    subtitle = "jun/2023",
+    x="",
+    y = "\n\nTotal",
+    caption = "\n\nFonte: https://www.gov.br/servidor/pt-br/observatorio-de-pessoal-govbr/"
+  ) +
+  theme_minimal()
+
+plotly::ggplotly(grafico_3.1)
+```
+
+```{r}
+tab_3.2 <- df |> group_by(EQUIVALENCIA) |> 
+  count(SEXO) |> 
+  tidyr::pivot_wider(
+    names_from = SEXO,
+    values_from = n
+  ) |> 
+  rowwise()  |> 
+  mutate(
+    Perc_Fem = round(Fem/sum(c_across(Fem:Mas), na.rm = TRUE), 2),
+    Perc_Mas = round(Mas/sum(c_across(Fem:Mas), na.rm = TRUE), 2)
+  ) |> 
+  select(-Fem, -Mas) |> 
+  rename(
+    Fem = Perc_Fem,
+    Mas = Perc_Mas,
+    Cargo = EQUIVALENCIA
+  ) |> 
+  tidyr::pivot_longer(
+  cols = c("Fem", "Mas"),
+  values_to = "Percentual") |> 
+  rename( Sexo = name) |> 
+  dplyr::mutate(
+    Percentual = ifelse(
+     Sexo == 'Mas', 
+     Percentual * -1, 
+     Percentual
+      )
+    )
+
+grafico_3.2 <- tab_3.2 %>%
+  ggplot(aes(
+    x = Cargo,
+    y = Percentual,
+    fill = Sexo
+  )
+  ) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = c("#ffaf51","#004580")) +
+  scale_y_continuous(breaks=seq(-1,1,0.25),
+                     limits = c(-0.95, 0.95),
+                     labels=paste0(abs(seq(-100,100,25)), "%"))+
+  coord_flip()+
+  theme_minimal()
+# +
+#   theme_minimal()
+  # facet_share(
+  #   ~ Genero,
+  #   dir = "h",
+  #   scales = "free",
+  #   reverse_num = TRUE
+ # )
+
+
+
+grafico_3.2 <- grafico_3.2 +
+  labs(
+    title = "Gráfico 2 – Percentual de ocupação de cargos de liderança por gênero em jun/2023",
+    subtitle = "\n\nGênero",
+    x="",
+    y = "\n\nProporção por Sexo",
+    caption = "\n\nFonte: https://www.gov.br/servidor/pt-br/observatorio-de-pessoal-govbr/serie-relatorios-gerenciais-genero"
+  ) 
+
+plotly::ggplotly(grafico_3.2) |> plotly::layout(yaxis = list(ticksuffix = "%"))
+```
+
+
+
+```{r}
+tab_3.3 <- df_19 |> group_by(CATEGORIA) |> 
+  count(SEXO) |> 
+  tidyr::pivot_wider(
+    names_from = SEXO,
+    values_from = n
+  ) |> 
+  rowwise()  |> 
+  mutate(
+    Perc_Fem = round(Fem/sum(c_across(Fem:Mas), na.rm = TRUE), 2),
+    Perc_Mas = round(Mas/sum(c_across(Fem:Mas), na.rm = TRUE), 2)
+  ) |> 
+  select(-Fem, -Mas) |> 
+  rename(
+    Fem = Perc_Fem,
+    Mas = Perc_Mas,
+    Categoria = CATEGORIA
+  ) |> 
+  tidyr::pivot_longer(
+  cols = c("Fem", "Mas"),
+  values_to = "Percentual") |> 
+  rename( Sexo = name) |> 
+  dplyr::mutate(
+    Percentual = ifelse(
+     Sexo == 'Mas', 
+     Percentual * -1, 
+     Percentual
+      )
+    ) |> mutate(
+      Categoria = factor(Categoria, levels = c("Média Liderança", "Alta Liderança"))
+    )
+
+grafico_3.3 <- tab_3.3 %>%
+  ggplot(aes(
+    x = Categoria,
+    y = Percentual,
+    fill = Sexo
+  )
+  ) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = c("#ffaf51","#004580")) +
+  scale_y_continuous(breaks=seq(-1,1,0.25),
+                     limits = c(-0.95, 0.95),
+                     labels=paste0(abs(seq(-100,100,25)), "%"))+
+  coord_flip()+
+  theme_minimal()
+
+grafico_3.3 <- grafico_3.3 +
+  labs(
+    title = "Gráfico 3 – Percentual de ocupação de cargos de liderança \nem junho/2019",
+    subtitle = "\n\nGênero",
+    x="",
+    y = "\n\nProporção por Sexo",
+    caption = "\n\nFonte: https://www.gov.br/servidor/pt-br/observatorio-de-pessoal-govbr/serie-relatorios-gerenciais-genero"
+  ) 
+
+plotly::ggplotly(grafico_3.3) |> plotly::layout(yaxis = list(ticksuffix = "%"))
+```
+
+```{r}
+tab_3.4 <- df |> group_by(CATEGORIA) |> 
+  count(SEXO) |> 
+  tidyr::pivot_wider(
+    names_from = SEXO,
+    values_from = n
+  ) |> 
+  rowwise()  |> 
+  mutate(
+    Perc_Fem = round(Fem/sum(c_across(Fem:Mas), na.rm = TRUE), 2),
+    Perc_Mas = round(Mas/sum(c_across(Fem:Mas), na.rm = TRUE), 2)
+  ) |> 
+  select(-Fem, -Mas) |> 
+  rename(
+    Fem = Perc_Fem,
+    Mas = Perc_Mas,
+    Categoria = CATEGORIA
+  ) |> 
+  tidyr::pivot_longer(
+  cols = c("Fem", "Mas"),
+  values_to = "Percentual") |> 
+  rename( Sexo = name) |> 
+  dplyr::mutate(
+    Percentual = ifelse(
+     Sexo == 'Mas', 
+     Percentual * -1, 
+     Percentual
+      )
+    ) |> mutate(
+      Categoria = factor(Categoria, levels = c("Média Liderança", "Alta Liderança"))
+    )
+
+grafico_3.4 <- tab_3.4 %>%
+  ggplot(aes(
+    x = Categoria,
+    y = Percentual,
+    fill = Sexo
+  )
+  ) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = c("#ffaf51","#004580")) +
+  scale_y_continuous(breaks=seq(-1,1,0.25),
+                     limits = c(-0.95, 0.95),
+                     labels=paste0(abs(seq(-100,100,25)), "%"))+
+  coord_flip()+
+  theme_minimal()
+
+grafico_3.4 <- grafico_3.4 +
+  labs(
+    title = "Gráfico 4 – Percentual de ocupação de cargos de liderança \nem junho/2023",
+    subtitle = "\n\nGênero",
+    x="",
+    y = "\n\nProporção por Sexo",
+    caption = "\n\nFonte: https://www.gov.br/servidor/pt-br/observatorio-de-pessoal-govbr/serie-relatorios-gerenciais-genero"
+  ) 
+
+plotly::ggplotly(grafico_3.4) |> plotly::layout(yaxis = list(ticksuffix = "%"))
+```
+
+```{r}
+tab_3.5 <- df |> group_by(SEXO) |> 
+  count(`DEPENDENTE MENOR DE IDADE?`) |> 
+  tidyr::pivot_wider(
+    names_from = `DEPENDENTE MENOR DE IDADE?`,
+    values_from = n
+  ) |> 
+  rowwise()  |> 
+  mutate(
+    `Sem filhos menores de idade`= round(NÃO/sum(c_across(NÃO:SIM), na.rm = TRUE), 2),
+    `Com filhos menores de idade` = round(SIM/sum(c_across(NÃO:SIM), na.rm = TRUE), 2)
+  ) |> 
+  select(-NÃO, -SIM) |> 
+  tidyr::pivot_longer(
+  cols = c("Sem filhos menores de idade","Com filhos menores de idade"),
+  values_to = "Percentual") |> 
+  rename(Filhos = name)
+  
+
+grafico_3.5 <- tab_3.5 %>%
+  ggplot(aes(
+    x = SEXO,
+    y = Percentual,
+    fill = Filhos
+  )
+  ) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = c("#ffaf51","#004580")) +
+  # scale_y_continuous(breaks=seq(-1,1,0.25),
+  #                    limits = c(-0.95, 0.95),
+  #                    labels=paste0(abs(seq(-100,100,25)), "%"))+
+  #coord_flip()+
+  theme_minimal()
+
+grafico_3.5 <- grafico_3.5 +
+  labs(
+    title = " Gráfico 5 – Percentual de líderes com filhos\n menores de idade (junho/2023)",
+    subtitle = "\n\nGênero",
+    x="",
+    y = "\n\nProporção ",
+    caption = "\n\nFonte: https://www.gov.br/servidor/pt-br/observatorio-de-pessoal-govbr/serie-relatorios-gerenciais-genero"
+  ) 
+
+plotly::ggplotly(grafico_3.5) |> plotly::layout(yaxis = list(ticksuffix = "%"))
+```
+
+
+```{r}
+# tab_3.6 <- df |> group_by(SEXO) |> 
+#   count(`ESTADO CIVIL`) |> 
+#   tidyr::pivot_wider(
+#     names_from = `ESTADO CIVIL`,
+#     values_from = n
+#   ) |> 
+#    prop.table(tab_3.6)
+#   mutate(
+#     `Sem filhos menores de idade`= round(NÃO/sum(c_across(NÃO:SIM), na.rm = TRUE), 2),
+#     `Com filhos menores de idade` = round(SIM/sum(c_across(NÃO:SIM), na.rm = TRUE), 2)
+#   ) |> 
+#   select(-NÃO, -SIM) |> 
+#   tidyr::pivot_longer(
+#   cols = c("Sem filhos menores de idade","Com filhos menores de idade"),
+#   values_to = "Percentual") |> 
+#   rename(Filhos = name)
+#   
+# 
+# grafico_3.5 <- tab_3.5 %>%
+#   ggplot(aes(
+#     x = SEXO,
+#     y = Percentual,
+#     fill = Filhos
+#   )
+#   ) +
+#   geom_bar(stat = "identity") +
+#   scale_fill_manual(values = c("#ffaf51","#004580")) +
+#   # scale_y_continuous(breaks=seq(-1,1,0.25),
+#   #                    limits = c(-0.95, 0.95),
+#   #                    labels=paste0(abs(seq(-100,100,25)), "%"))+
+#   #coord_flip()+
+#   theme_minimal()
+# 
+# grafico_3.5 <- grafico_3.5 +
+#   labs(
+#     title = " Gráfico 5 – Percentual de líderes com filhos\n menores de idade (junho/2023)",
+#     subtitle = "\n\nGênero",
+#     x="",
+#     y = "\n\nProporção ",
+#     caption = "\n\nFonte: https://www.gov.br/servidor/pt-br/observatorio-de-pessoal-govbr/serie-relatorios-gerenciais-genero"
+#   ) 
+# 
+# plotly::ggplotly(grafico_3.5) |> plotly::layout(yaxis = list(ticksuffix = "%"))
+```
+
+
+```{r}
+library(forcats)
+
+tab_3.6 <- with(df, table(SEXO, `ESTADO CIVIL`))
+
+tab_3.6 <- prop.table(tab_3.6, 1 )
+
+tab_3.6 <- as_tibble(tab_3.6) |> 
+  mutate(
+    Percentual = round(n, 3),
+    `Estado Civil` = `ESTADO CIVIL`,
+    Sexo = SEXO
+    )  
+tab_3.6$`ESTADO CIVIL` <- fct_reorder(tab_3.6$`ESTADO CIVIL`, tab_3.6$Percentual)
+
+grafico_3.6 <- tab_3.6 %>%
+  ggplot(aes(
+    x = SEXO,
+    y = Percentual,
+    fill = `ESTADO CIVIL`
+  )
+  ) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = c("#808080", "#a0a0a0", "#c0c0c0", "#dfdfdf", "#ffaf51")) +
+  scale_y_continuous(breaks=seq(0,1,0.2),
+                     #limits = c(0, 1),
+                     labels=paste0(abs(seq(0,100,20)), "%"))+
+  #coord_flip()+
+  theme_minimal()
+
+grafico_3.6 <- grafico_3.6 +
+  labs(
+    title = " Gráfico 6 – Percentual de líderes por estado civil  (junho/2023)",
+    subtitle = "\n\nGênero",
+    x="",
+    y = "",
+    caption = "\n\nFonte: https://www.gov.br/servidor/pt-br/observatorio-de-pessoal-govbr/serie-relatorios-gerenciais-genero"
+  )
+
+plotly::ggplotly(grafico_3.6) |> plotly::layout(yaxis = list(ticksuffix = "%"))
+```
+
+
+```{r}
+tab_3.7_2023 <- df |> mutate(
+  Etnia = case_when( 
+    `COR ORIGEM ETNICA` %in% c("PARDA", "PRETA") & SEXO == "Fem"  ~ "Mulheres Negras",
+    `COR ORIGEM ETNICA` %in% c("PARDA", "PRETA") & SEXO == "Mas"  ~ "Homens Negros",
+    `COR ORIGEM ETNICA` == "INDIGENA" & SEXO == "Mas"  ~ "Homens Indígenas",
+    `COR ORIGEM ETNICA` == "INDIGENA" & SEXO == "Fem"  ~ "Mulheres Indígenas",
+    `COR ORIGEM ETNICA` %in% c("AMARELA", "BRANCA", "NAO INFORMADO") & SEXO == "Fem"  ~ "Demais Mulheres",
+    `COR ORIGEM ETNICA` %in% c("AMARELA", "BRANCA", "NAO INFORMADO") & SEXO == "Mas"  ~ "Demais Homens",
+  )
+  ) 
+
+tab_3.7_2023 <- with(tab_3.7_2023, table(CATEGORIA, Etnia))
+
+tab_3.7_2023 <- prop.table(tab_3.7_2023, 1 )
+
+tab_3.7_2023 <- as_tibble(tab_3.7_2023) |> 
+  mutate(
+    Ano = "2023",
+    Percentual = round(n, 3)
+    )  
+
+# 2019
+
+tab_3.7_2019 <- df_19 |> mutate(
+  Etnia = case_when( 
+    `COR ORIGEM ETNICA` %in% c("PARDA", "PRETA") & SEXO == "Fem"  ~ "Mulheres Negras",
+    `COR ORIGEM ETNICA` %in% c("PARDA", "PRETA") & SEXO == "Mas"  ~ "Homens Negros",
+    `COR ORIGEM ETNICA` == "INDIGENA" & SEXO == "Mas"  ~ "Homens Indígenas",
+    `COR ORIGEM ETNICA` == "INDIGENA" & SEXO == "Fem"  ~ "Mulheres Indígenas",
+    `COR ORIGEM ETNICA` %in% c("AMARELA", "BRANCA", "NAO INFORMADO") & SEXO == "Fem"  ~ "Demais Mulheres",
+    `COR ORIGEM ETNICA` %in% c("AMARELA", "BRANCA", "NAO INFORMADO") & SEXO == "Mas"  ~ "Demais Homens",
+  )
+  ) 
+
+tab_3.7_2019 <- with(tab_3.7_2019, table(CATEGORIA, Etnia))
+
+tab_3.7_2019 <- prop.table(tab_3.7_2019, 1 )
+
+tab_3.7_2019 <- as_tibble(tab_3.7_2019) |> 
+   mutate(
+    Ano = "2019",
+    Percentual = round(n, 3)
+    ) 
+
+# combinar
+
+tab_3.7 <- dplyr::bind_rows(tab_3.7_2019, tab_3.7_2023) |> 
+  mutate(
+    Etnia = factor(Etnia, levels = c("Mulheres Negras", "Mulheres Indígenas", "Demais Mulheres", "Homens Negros", "Homens Indígenas","Demais Homens")
+    )
+  )
+
+grafico_3.7 <- ggplot(tab_3.7) +
+  aes(x = Ano, y = Percentual, fill = Etnia) +
+  geom_col(width = 0.4) +
+  scale_fill_hue(direction = 1) +
+  coord_flip() +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  facet_wrap(vars(CATEGORIA))
+
+plotly::ggplotly(grafico_3.7) |> 
+  plotly::layout(legend = list(orientation = "h", xanchor = "center", yanchor = "bottom", x = 0.5, y = -0.2))
+
+```
+
+```{r}
+
+tabela_Fem <- df |> 
+   mutate(
+  `Cor/Etnia` = case_when( 
+    `COR ORIGEM ETNICA` %in% c("PARDA", "PRETA")  ~ "NEGRA",
+    .default = as.character(`COR ORIGEM ETNICA`)
+    )
+  ) |> 
+  count(SEXO, `Cor/Etnia`, EQUIVALENCIA) |> 
+  tidyr::pivot_wider(names_from = EQUIVALENCIA,
+                     values_from = n,
+                     values_fill = 0) |>
+  dplyr::filter(SEXO =="Fem") |> 
+  select(-SEXO) |> 
+  rowwise() |>
+     mutate(
+       Total =sum(c_across(`DAS-1`:NE), na.rm = TRUE) 
+     ) |> janitor::adorn_totals()
+
+tabela_Mas <- df |> 
+   mutate(
+  `Cor/Etnia` = case_when( 
+    `COR ORIGEM ETNICA` %in% c("PARDA", "PRETA")  ~ "NEGRA",
+    .default = as.character(`COR ORIGEM ETNICA`)
+    )
+  ) |> 
+  count(SEXO, `Cor/Etnia`, EQUIVALENCIA) |> 
+  tidyr::pivot_wider(names_from = EQUIVALENCIA,
+                     values_from = n,
+                     values_fill = 0) |>
+  dplyr::filter(SEXO =="Mas") |> 
+  select(-SEXO) |> 
+  rowwise() |>
+     mutate(
+       Total =sum(c_across(`DAS-1`:NE), na.rm = TRUE) 
+     ) |> janitor::adorn_totals()
+
+library(gt)
+
+tabela_Fem |> 
+  gt::gt(rowname_col = "Cor/Etnia") |> 
+  tab_header(
+    title = "Mulheres",
+    subtitle = "Cor/Etnia por Cargos"
+  ) |> 
+  fmt_number(
+    columns = where(is.numeric),
+    sep_mark = ".",
+    dec_mark = ",", 
+    decimals = 0
+  )
+
+tabela_Mas |> 
+  gt::gt(rowname_col = "Cor/Etnia") |> 
+  tab_header(
+    title = "Homens",
+    subtitle = "Cor/Etnia por Cargos"
+  ) |> 
+  fmt_number(
+    columns = where(is.numeric),
+    sep_mark = ".",
+    dec_mark = ",", 
+    decimals = 0
+  )
+```
+
+
+
+```{r}
+tab_3.8 <- df |> group_by(EQUIVALENCIA, SEXO) |> 
+  summarise(
+    media = round(mean(IDADE),0)
+  )
+
+grafico_3.8 <- ggplot(tab_3.8) +
+  aes(x = EQUIVALENCIA, y = media, fill = SEXO) +
+  geom_col(position = "dodge") +
+  scale_fill_manual(values = c("#ffaf51","#004580"))+
+  #scale_fill_hue(direction = 1) +
+  labs(
+    x = "",
+    y = "",
+    title = "Gráfico 8 – Média de idade dos líderes (junho/2023)",
+    fill = "Sexo"
+  ) +
+  coord_flip() +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+
+plotly::ggplotly(grafico_3.8) |> 
+  plotly::layout(legend = list(orientation = "h", xanchor = "center", yanchor = "bottom", x = 0.5, y = -0.2))
+```
+
+
+```{r}
+tab_3.9 <- df |> group_by(CATEGORIA, SEXO) |> 
+  summarise(
+    media = round(mean(IDADE),0)
+  ) |> ungroup() |> 
+  dplyr::add_row(CATEGORIA = "Total de Servidores", SEXO = "Fem", media = 46) |> 
+  dplyr::add_row(CATEGORIA = "Total de Servidores", SEXO = "Mas", media = 48)
+
+grafico_3.9 <- ggplot(tab_3.9) +
+  aes(x = CATEGORIA, y = media, fill = SEXO) +
+  geom_col(position = "dodge") +
+  scale_fill_manual(values = c("#ffaf51","#004580"))+
+  #scale_fill_hue(direction = 1) +
+  labs(
+    x = "",
+    y = "",
+    title = "Gráfico 9 – Média de idade dos servidores e lideranças (junho/2023)",
+    fill = ""
+  ) +
+  coord_flip() +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+
+plotly::ggplotly(grafico_3.9) |> 
+  plotly::layout(legend = list(orientation = "h", xanchor = "center", yanchor = "bottom", x = 0.5, y = -0.2))
+```
+
+
+```{r}
+tab_3.10 <- df |> group_by(EQUIVALENCIA, SEXO, `DEPENDENTE MENOR DE IDADE?`) |> 
+  summarise(
+    media = round(mean(IDADE),0)
+  ) |> ungroup() 
+
+grafico_3.10 <- ggplot(tab_3.10) +
+  aes(x = EQUIVALENCIA, y = media, fill = `DEPENDENTE MENOR DE IDADE?`) +
+  geom_col(position = "dodge") +
+  scale_fill_brewer(palette = "Greens", direction = 1) +
+  labs(
+    x = "",
+    y = "",
+    title = "Gráfico 10 – Relação entre média de idade dos líderes\ne a existência de filhos menores de idade, por nível de cargo (junho/2023)",
+    fill = "Dependente Menor de Idade?"
+  ) +
+  coord_flip() +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  facet_wrap(vars(SEXO))
+
+plotly::ggplotly(grafico_3.10) |> 
+  plotly::layout(legend = list(orientation = "h", xanchor = "center", yanchor = "bottom", x = 0.5, y = -0.2))
+```
+
+```{r}
+tab_3.11 <- df |> group_by(CATEGORIA, SEXO, `DEPENDENTE MENOR DE IDADE?`) |> 
+  summarise(
+    media = round(mean(IDADE),0)
+  ) |> ungroup() 
+
+grafico_3.11 <- ggplot(tab_3.11) +
+  aes(x = CATEGORIA, y = media, fill = `DEPENDENTE MENOR DE IDADE?`) +
+  geom_col(position = "dodge") +
+  scale_fill_brewer(palette = "Greens", direction = 1) +
+  labs(
+    x = "",
+    y = "",
+    title = "Gráfico 11 – Relação entre média de idade dos líderes\ne a existência de filhos menores de idade, por agrupamento",
+    fill = "Dependente Menor de Idade?"
+  ) +
+  coord_flip() +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  facet_wrap(vars(SEXO))
+
+plotly::ggplotly(grafico_3.11) |> 
+  plotly::layout(legend = list(orientation = "h", xanchor = "center", yanchor = "bottom", x = 0.5, y = -0.2))
+```
+
+```{r}
+tab_3.11 <- df_pcd |> mutate(
+  PCD = case_when( 
+      `DEFICIÊNCIA FÍSICA` != "S/Info"  ~ "PCD",
+    .default = as.character(`DEFICIÊNCIA FÍSICA`)
+    )) |> group_by(SEXO , PCD) |> 
+  summarise(Total = sum(Ativo)) |> 
+  ungroup() |> 
+  tidyr::pivot_wider(names_from =PCD,
+                     values_from = Total)  |> 
+  rowwise()  |> 
+  mutate(
+    Total = sum(c_across(PCD:`S/Info`), na.rm = TRUE
+    )
+  ) 
+
+tab_3.11 <- tab_3.11 |> 
+mutate(
+  Percentual= round(PCD/Total, 3 ),
+  CATEGORIA = "Total de Servidores"
+  ) |> relocate(CATEGORIA, dplyr::everything())
+ 
+```
+
+
+```{r}
+df_pcd <- df |> 
+  mutate(
+      PCD = case_when( 
+      `DEFICIÊNCIA FÍSICA` != "S/Info"  ~ "PCD",
+    .default = as.character(`DEFICIÊNCIA FÍSICA`)
+    )
+  )
+
+tab_3.12 <- with(df_pcd, table(CATEGORIA, PCD, SEXO))
+
+tab_3.12 <- as_tibble(tab_3.12)
+
+tab_3.12 <- tab_3.12 |> 
+tidyr::pivot_wider(names_from =PCD,
+                     values_from = n)  |> 
+  rowwise()  |> 
+  mutate(
+    Total = sum(c_across(PCD:`S/Info`), na.rm = TRUE
+    )
+  ) 
+
+tab_3.12 <- tab_3.12 |> 
+mutate(
+  Percentual= round(PCD/Total, 3 )
+)
+
+#Combinar
+
+tab_3.13 <- dplyr::bind_rows(tab_3.11, tab_3.12) |> 
+  mutate(
+    imagem = "img/Capturar.JPG"
+  )
+```
+
+```{r}
+library(ggtextures)
+ggplot(tab_3.13) +
+  aes(x = CATEGORIA, y = Percentual, image = imagem) +
+  geom_textured_col(img_width = unit(0.5, "null")) +
+  labs(x = " ", y = " ") +
+  theme_minimal() +
+  facet_wrap(vars(SEXO), nrow = 2)
+```
+
+
+
+

@@ -1,0 +1,133 @@
+---
+title: "Perfil das Lideranças no Governo Federal" 
+subtitle: "Poder Executivo Federal"
+date: "`r format(Sys.time(), '%d de %B %Y')`"
+output:
+  prettydoc::html_pretty:
+    fig_caption: true
+    css: "style.css"
+    theme: Tactile
+    highlight: github
+    toc: true # ou yes
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 1. Sumário Executivo
+
+O presente relatório tem como objetivo descrever o perfil dos ocupantes de cargos comissionados e funções de confiança de liderança do Poder Executivo Federal Civil, abrangendo os órgãos da Administração Direta, Autárquica e Fundacional. Os dados trabalhados são oriundos do Sistema Integrado de Administração de Recursos Humanos -- SIAPE.
+
+Segundo o disposto na Convenção nº 111 da Organização Internacional do Trabalho (OIT), toda distinção, exclusão ou preferência fundada na raça, cor, sexo, religião, opinião política, ascendência nacional ou origem social que tenha por efeito destruir ou alterar a igualdade em matéria de emprego ou profissão é ato discriminatório. Não sendo consideradas discriminatórias, no entanto, as distinções, exclusões ou preferências fundadas em qualificações exigidas para um determinado emprego.
+
+Alcançar a igualdade de gênero não é um processo de curto prazo. Exige grande vontade política e um esforço conjunto por parte de governos, sociedade civil, organismos internacionais e outros. Entretanto as reformas legais e regulatórias podem ter um papel fundamental e ser um importante primeiro passo, conforme disposto em artigo do Banco Mundial.
+
+A Constituição Federal (CF) buscando promover a **igualdade** entre homens e mulheres dispõe que constituem objetivos fundamentais da República Federativa do Brasil: promover o bem de todos, sem preconceitos de origem, raça, **sexo**, cor, idade e quaisquer outras formas de discriminação (inciso IV do artigo 3º). Cabe mencionar ainda que em seu artigo 5º a Constituição menciona que todos são iguais perante a Lei, sem distinção de qualquer natureza, sendo homens e mulheres iguais em direitos e obrigações (inciso I).
+
+> *"Art. 7º São direitos dos trabalhadores urbanos e rurais, além de* *outros que visem à melhoria de sua condição social: (...)*
+>
+> *XXX - **proibição** de diferença de salários, de exercício de funções e de* *critério de admissão por motivo de **sexo**, idade, cor ou estado civil;"* *(Grifo nosso)*
+
+Tais dispositivos não deixam dúvidas quanto à importância que é dada ao princípio da Igualdade, sendo considerado como um dos pilares do Estado Democrático de Direito, que busca repelir a discriminação e o tratamento desigual entre os cidadãos. A Constituição ratifica esse princípio por meio de várias normas, algumas diretamente determinadoras da igualdade, outras buscando a equidade entre os desiguais mediante a concessão de direitos sociais fundamentais.
+
+## Conceitos
+
+São considerados como Cargos de Liderança as Funções de Confiança e os Cargos em Comissão.
+
+O inciso V do artigo 37 da Constituição Federal, assim dispõe:
+
+> (...) V - as funções de confiança, exercidas exclusivamente por servidores ocupantes de cargo efetivo, e os cargos  em comissão, > a serem preenchidos por servidores de carreira nos casos, condições e percentuais mínimos previstos em lei, destinam-se apenas 
+> às atribuições de direção, chefia e assessoramento; (...)
+
+```{r pressure, echo=FALSE, message=TRUE, warning=FALSE}
+plot(pressure)
+```
+
+A partir do texto acima, observa-se que o cargo de provimento em comissão é aquele cujo provimento independe de concurso público, destinado apenas às atribuições de direção, chefia e assessoramento, podendo ser preenchido por pessoa que não seja servidor de carreira, observando-se o percentual mínimo reservado pela lei aos servidores efetivos. Com relação à Função de Confiança, ela é atribuída a um servidor efetivo que já pertence aos quadros da administração.
+
+Os cargos em comissão do Grupo-Direção e Assessoramento Superiores (DAS) possuem níveis que variam de 1 até 6. Os níveis 1 e 2 são mais relacionados a atividades operacionais. Já o 3 é atribuído aos coordenadores. O nível 4 geralmente equivale a coordenador-geral; o 5 a diretor e o 6 a secretário nacional ou presidente de fundação. Há ainda os Cargos de Natureza Especial (NES) que incluem os secretários especiais, os ministros de estado, os secretários-executivos, entre outros cargos.
+A Lei nº 13.346, de 10 de outubro de 2016, criou as Funções Comissionadas do Poder Executivo (FCPE) que se equiparam, para todos os efeitos legais e regulamentares, aos cargos em comissão DAS de mesmo nível.
+
+A Portaria nº 121, de 27 de março de 2019, divulgou as tabelas de equivalência entre os cargos em comissão do Grupo-Direção e Assessoramento Superiores (DAS) e Funções Gratificadas (FG) do Poder Executivo Federal com os cargos e funções integrantes da Administração Pública Federal direta e indireta. Essa equivalência aplica-se à toda a Administração Pública Federal, inclusive aos Órgãos, Autarquias e Fundações que não tenham em sua estrutura cargos em comissão do Grupo-Direção e Assessoramento Superiores (DAS) e Funções Gratificadas (FG) do Poder Executivo.
+
+Em setembro de 2021, o Governo Federal publicou a Lei nº 14.204/2021, que simplificou a gestão de cargos e de funções de confiança na Administração Pública Federal, dispondo sobre a instituição dos Cargos Comissionados Executivos (CCE) e as Funções Comissionadas Executivas (FCE). O artigo 5º da Lei determina que as menções aos cargos em comissão do Grupo DAS existentes na legislação passam a referir-se também aos CCE e às FCE.
+
+Posteriormente, foi publicado o Decreto nº 10.829, de 5 de outubro de 2021, por meio do qual a Lei nº 14.204/21 foi regulamentada. O Anexo III desse decreto apresenta a relação entre cargos em comissão do Grupo-Direção e Assessoramento Superiores (DAS), de Funções Comissionadas do Poder Executivo (FCPE), Cargos Comissionados Executivos (CCE) e Funções Comissionadas Executivas (FCE).  E, considerando a divisão em categorias apresentada no Anexo I do mesmo decreto, não foram considerados como Cargos de Liderança as Funções Comissionadas Executivas (FCE) de categoria Assessoramento Técnico Especializado (FCE 4.01 a FCE 4.13).
+
+Desse modo, considerando-se todos os normativos supracitados, a tabela a seguir demonstra as equivalências consideradas nesse relatório. Nos gráficos que apresentam dados segmentados por níveis de DAS e NES, estão incorporados todos os cargos equivalentes a cada nível.
+
+
+```{r leitura das bases, echo=FALSE, warning=FALSE}
+library(tidyverse)
+library(readxl)
+df <- read_excel("../data/BaseDados_20230720.xlsx", 
+    sheet = "Base_jun23")
+
+De_Para <- read_excel("../data/RLP_Lideranca_20230720.xlsx", 
+    sheet = "DE-PARA")
+
+left_join(df, De_Para, by = c("SUBNÍVEL FUNÇÃO" = "funcao_sbnvl_no"))
+
+df <- df |> left_join(De_Para, by = c("SUBNÍVEL FUNÇÃO" = "funcao_sbnvl_no")) 
+
+
+df_19 <- read_excel("../data/BaseDados_20230720.xlsx", 
+    sheet = "Base_jun19")
+
+df_19 <- df_19 |> left_join(De_Para, by = c("SUBNÍVEL FUNÇÃO" = "funcao_sbnvl_no")) 
+
+df_pcd <- read_excel("../data/RLP_Lideranca_20230720.xlsx", 
+    sheet = "Base_PCD")
+```
+
+```{r echo=FALSE, warning=FALSE}
+
+tab_3.1 <- df |> group_by(EQUIVALENCIA) |> 
+  count(SEXO) |> 
+  dplyr::mutate(
+    Total = ifelse(
+      SEXO == 'Mas', n * -1, n
+      )
+  ) |> rename(
+    Cargo = EQUIVALENCIA,
+    Sexo = SEXO
+  )
+  
+
+grafico_3.1 <- tab_3.1 %>%
+  ggplot(aes(
+    x = Cargo,
+    y = Total,
+    fill = Sexo
+  )
+  ) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = c("#ffaf51", "#004580")) +
+  scale_y_continuous(breaks=seq(-7000,7000,2500),
+                     limits = c(-7000, 8000),                     labels=paste0(abs(seq(-7000,7000,2500))))+
+  coord_flip()+
+  labs(
+    title = "Gráfico 1 – Quantitativo de ocupantes de cargos de liderança em jun/2023",
+    subtitle = "jun/2023",
+    x="",
+    y = "\n\nTotal",
+    caption = "\n\nFonte: https://www.gov.br/servidor/pt-br/observatorio-de-pessoal-govbr/"
+  ) +
+  theme_minimal()
+
+plotly::ggplotly(grafico_3.1)
+```
+
+O numero de linhas `r dim(tab_3.1)`
+
+
+
+
