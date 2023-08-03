@@ -15,11 +15,8 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-
-
-
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, error = FALSE, warning = FALSE)
 ```
 
 ## 1. Sumário Executivo
@@ -38,7 +35,7 @@ A Constituição Federal (CF) buscando promover a **igualdade** entre homens e m
 
 Tais dispositivos não deixam dúvidas quanto à importância que é dada ao princípio da Igualdade, sendo considerado como um dos pilares do Estado Democrático de Direito, que busca repelir a discriminação e o tratamento desigual entre os cidadãos. A Constituição ratifica esse princípio por meio de várias normas, algumas diretamente determinadoras da igualdade, outras buscando a equidade entre os desiguais mediante a concessão de direitos sociais fundamentais.
 
-## Conceitos
+## 2. Conceitos
 
 São considerados como Cargos de Liderança as Funções de Confiança e os Cargos em Comissão.
 
@@ -46,10 +43,6 @@ O inciso V do artigo 37 da Constituição Federal, assim dispõe:
 
 > (...) V - as funções de confiança, exercidas exclusivamente por servidores ocupantes de cargo efetivo, e os cargos  em comissão, > a serem preenchidos por servidores de carreira nos casos, condições e percentuais mínimos previstos em lei, destinam-se apenas 
 > às atribuições de direção, chefia e assessoramento; (...)
-
-```{r pressure, echo=FALSE, message=TRUE, warning=FALSE}
-plot(pressure)
-```
 
 A partir do texto acima, observa-se que o cargo de provimento em comissão é aquele cujo provimento independe de concurso público, destinado apenas às atribuições de direção, chefia e assessoramento, podendo ser preenchido por pessoa que não seja servidor de carreira, observando-se o percentual mínimo reservado pela lei aos servidores efetivos. Com relação à Função de Confiança, ela é atribuída a um servidor efetivo que já pertence aos quadros da administração.
 
@@ -65,7 +58,24 @@ Posteriormente, foi publicado o Decreto nº 10.829, de 5 de outubro de 2021, por
 Desse modo, considerando-se todos os normativos supracitados, a tabela a seguir demonstra as equivalências consideradas nesse relatório. Nos gráficos que apresentam dados segmentados por níveis de DAS e NES, estão incorporados todos os cargos equivalentes a cada nível.
 
 
-```{r leitura das bases, echo=FALSE, warning=FALSE}
+| Cargos em Comissão e Funções Comissionadas do Poder Executivo Federal | FCPE   | Cargos em Comissão das Agências Reguladoras          | Cargos em Comissão e Funções Comissionadas das Instituições Federais de Ensino | FCE e CCE |
+|-----------------------------------------------------------------------|--------|-------------------------------------------------------|-------------------------------------------------------------------------------|----------|
+| NES   |        |              |           | Nível 18 |       
+| DAS-6 |        | CD-I e CD-II | CD-1      | Nível 17 | 
+| DAS-5 |        |  CGE-I       | CD-2      | Nível 15 e 16|  
+| DAS-4 | FCPE-4 | CGE-II, CGE-III, CA-I, CA-II e CCT-V             | CD-3          | Nível 13 e 14 |
+| DAS-3 | FCPE-3 | CGE-IV e CCT-IV                                          | CD-4                 | Nível 10 a 12 |
+| DAS-2 | FCPE-2 | CA-III e CCT-III                                      |          | Nível 7 a 9  |
+| DAS-1 | FCPE-1 | CAS-I, CAS-II, CCT-II e CCT-I             |             | Nível 5 e 6  |
+
+Este relatório considera como Cargos de Média Liderança, os cargos em comissão do Grupo-Direção e Assessoramento Superiores (DAS) do nível 1 a 4 e seus equivalentes. Já os cargos em comissão do Grupo-Direção e Assessoramento Superiores (DAS) do nível 5 e 6, os Cargos de Natureza Especial (NES) e seus equivalentes são considerados como Cargos de Alta Liderança.
+
+
+## 3. Dados
+
+
+
+```{r leitura das bases, warning=FALSE}
 library(tidyverse)
 library(readxl)
 df <- read_excel("../data/BaseDados_20230720.xlsx", 
@@ -73,8 +83,6 @@ df <- read_excel("../data/BaseDados_20230720.xlsx",
 
 De_Para <- read_excel("../data/RLP_Lideranca_20230720.xlsx", 
     sheet = "DE-PARA")
-
-left_join(df, De_Para, by = c("SUBNÍVEL FUNÇÃO" = "funcao_sbnvl_no"))
 
 df <- df |> left_join(De_Para, by = c("SUBNÍVEL FUNÇÃO" = "funcao_sbnvl_no")) 
 
@@ -88,19 +96,66 @@ df_pcd <- read_excel("../data/RLP_Lideranca_20230720.xlsx",
     sheet = "Base_PCD")
 ```
 
-```{r echo=FALSE, warning=FALSE}
+```{r, dados_3.1}
 
 tab_3.1 <- df |> group_by(EQUIVALENCIA) |> 
   count(SEXO) |> 
   dplyr::mutate(
     Total = ifelse(
       SEXO == 'Mas', n * -1, n
-      )
+      ), 
+      SEXO = factor(SEXO, levels = c("Mas", "Fem"))
+    
   ) |> rename(
     Cargo = EQUIVALENCIA,
     Sexo = SEXO
-  )
+  ) 
+
+tab_3.2 <- df |> group_by(EQUIVALENCIA) |> 
+  count(SEXO) |> 
   
+  tidyr::pivot_wider(
+    names_from = SEXO,
+    values_from = n
+  ) |> 
+  rowwise()  |> 
+  mutate(
+    Perc_Fem = round(Fem/sum(c_across(Fem:Mas), na.rm = TRUE), 2),
+    Perc_Mas = round(Mas/sum(c_across(Fem:Mas), na.rm = TRUE), 2),
+    
+  ) |> 
+  select(-Fem, -Mas) |> 
+  rename(
+    Fem = Perc_Fem,
+    Mas = Perc_Mas,
+    Cargo = EQUIVALENCIA
+  ) |> 
+  tidyr::pivot_longer(
+  cols = c("Fem", "Mas"),
+  values_to = "Percentual") |> 
+  rename( Sexo = name) |> 
+  dplyr::mutate(
+    Percentual = ifelse(
+     Sexo == 'Mas', 
+     Percentual * -1, 
+     Percentual
+      )
+    ) |> 
+ mutate(
+    Sexo = factor(Sexo, levels = c("Mas", "Fem"))
+  ) 
+
+perc_fem <- tab_3.2 |> filter(Sexo == "Fem") |> summarise(perc=mean(Percentual))
+
+
+```
+
+
+### 3.1 Ocupação de Cargos de Liderança
+
+Analisando a composição dos ocupantes de Cargos de Liderança sob o recorte do gênero, observa-se que a ocupação feminina corresponde, em média, a `r scales::percent(perc_fem$perc)` do total. O gráfico 1 apresenta o quantitativo de ocupantes de Cargos de Liderança em junho de 2023, considerando os cargos em comissão do Grupo-Direção e Assessoramento Superiores (DAS) e seus equivalentes.
+
+```{r, 3.1,  fig.width=8}
 
 grafico_3.1 <- tab_3.1 %>%
   ggplot(aes(
@@ -110,24 +165,725 @@ grafico_3.1 <- tab_3.1 %>%
   )
   ) +
   geom_bar(stat = "identity") +
-  scale_fill_manual(values = c("#ffaf51", "#004580")) +
+  geom_text(aes(label = abs(Total)), vjust = -100, nudge_y = 20, size = 3, color = "black") +  # Ajustando a posição e tamanho dos rótulos de dados
+  scale_fill_manual(values = c( "#004580", "#ffaf51")) +
   scale_y_continuous(breaks=seq(-7000,7000,2500),
                      limits = c(-7000, 8000),                     labels=paste0(abs(seq(-7000,7000,2500))))+
   coord_flip()+
   labs(
     title = "Gráfico 1 – Quantitativo de ocupantes de cargos de liderança em jun/2023",
-    subtitle = "jun/2023",
     x="",
-    y = "\n\nTotal",
+    y = "",
+    fill = "",
     caption = "\n\nFonte: https://www.gov.br/servidor/pt-br/observatorio-de-pessoal-govbr/"
   ) +
-  theme_minimal()
+  theme_minimal()+ theme(text = element_text(size = 10)) 
 
-plotly::ggplotly(grafico_3.1)
+plotly::ggplotly(grafico_3.1) |> 
+  plotly::layout(legend = list(orientation = "h", xanchor = "center", yanchor = "bottom", x = 0.5, y = -0.2))
+
 ```
 
-O numero de linhas `r dim(tab_3.1)`
+```{r  fig.width=8}
+grafico_3.2 <- tab_3.2 %>%
+  ggplot(aes(
+    x = Cargo,
+    y = Percentual,
+    fill = Sexo
+  )) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = paste0(abs(Percentual*100), "%")), size = 3, color = "black") +  # Ajustando a posição e tamanho dos rótulos de dados
+  scale_fill_manual(values = c("#004580", "#ffaf51")) +
+  scale_y_continuous(breaks=seq(-1,1,0.25),
+                     limits = c(-0.95, 0.95),
+                     labels=paste0(abs(seq(-100,100,25)), "%"))+
+  coord_flip()+
+  theme_minimal()
+
+grafico_3.2 <- grafico_3.2 +
+  labs(
+    title = "Gráfico 2 – Percentual de ocupação de cargos de liderança por gênero em jun/2023",
+    subtitle = "\n\nGênero",
+    x="",
+    y = "",
+    fill = "",
+    caption = "\n\nFonte: https://www.gov.br/servidor/pt-br/observatorio-de-pessoal-govbr/serie-relatorios-gerenciais-genero"
+  ) 
+
+plotly::ggplotly(grafico_3.2) |> plotly::layout(yaxis = list(ticksuffix = "%")) |> plotly::layout(legend = list(orientation = "h", xanchor = "center", yanchor = "bottom", x = 0.5, y = -0.2))
+```
+
+```{r}
+
+tab_3.3 <- df_19 |> group_by(CATEGORIA) |> 
+  count(SEXO) |> 
+  tidyr::pivot_wider(
+    names_from = SEXO,
+    values_from = n
+  ) |> 
+  rowwise()  |> 
+  mutate(
+    Perc_Fem = round(Fem/sum(c_across(Fem:Mas), na.rm = TRUE), 2),
+    Perc_Mas = round(Mas/sum(c_across(Fem:Mas), na.rm = TRUE), 2)
+  ) |> 
+  select(-Fem, -Mas) |> 
+  rename(
+    Fem = Perc_Fem,
+    Mas = Perc_Mas,
+    Categoria = CATEGORIA
+  ) |> 
+  tidyr::pivot_longer(
+  cols = c("Fem", "Mas"),
+  values_to = "Percentual") |> 
+  rename( Sexo = name) |> 
+  dplyr::mutate(
+    Percentual = ifelse(
+     Sexo == 'Mas', 
+     Percentual * -1, 
+     Percentual
+      )
+    ) |> mutate(
+      Categoria = factor(Categoria, levels = c("Média Liderança", "Alta Liderança"))
+    )
+
+tab_3.4 <- df |> group_by(CATEGORIA) |> 
+  count(SEXO) |> 
+  tidyr::pivot_wider(
+    names_from = SEXO,
+    values_from = n
+  ) |> 
+  rowwise()  |> 
+  mutate(
+    Perc_Fem = round(Fem/sum(c_across(Fem:Mas), na.rm = TRUE), 2),
+    Perc_Mas = round(Mas/sum(c_across(Fem:Mas), na.rm = TRUE), 2)
+  ) |> 
+  select(-Fem, -Mas) |> 
+  rename(
+    Fem = Perc_Fem,
+    Mas = Perc_Mas,
+    Categoria = CATEGORIA
+  ) |> 
+  tidyr::pivot_longer(
+  cols = c("Fem", "Mas"),
+  values_to = "Percentual") |> 
+  rename( Sexo = name) |> 
+  dplyr::mutate(
+    Percentual = ifelse(
+     Sexo == 'Mas', 
+     Percentual * -1, 
+     Percentual
+      )
+    ) |> mutate(
+      Categoria = factor(Categoria, levels = c("Média Liderança", "Alta Liderança"))
+    )
+```
 
 
+Comparando-se os dados do período atual (junho/2023) com dados de outro período semelhante (junho/2019), é possível observar que o percentual de servidoras do sexo feminino em relação à totalidade da força de trabalho passou de 46% em 2019 para 45% em 2023. Todavia, o percentual de ocupação feminina de cargos de Alto Liderança aumentou, de 25% para 34%. E, nos cargos de Média Liderança aumentou de 40% para 41%.
 
+```{r , fig.width= 8}
+grafico_3.3 <- tab_3.3 %>%
+  ggplot(aes(
+    x = Categoria,
+    y = Percentual,
+    fill = Sexo
+  )
+  ) +
+  geom_bar(stat = "identity", width =  0.4) +
+  geom_text(aes(label = paste0(abs(Percentual*100), "%")),  size = 3, color = "black") +
+  scale_fill_manual(values = c("#ffaf51","#004580")) +
+  scale_y_continuous(breaks=seq(-1,1,0.25),
+                     limits = c(-0.95, 0.95),
+                     labels=paste0(abs(seq(-100,100,25)), "%"))+
+  coord_flip()+
+  theme_minimal()
+
+grafico_3.3 <- grafico_3.3 +
+  labs(
+    title = "Gráfico 3 – Percentual de ocupação de cargos de liderança em junho/2019",
+    x="",
+    y = "",
+    fill = '',
+    caption = "\n\nFonte: https://www.gov.br/servidor/pt-br/observatorio-de-pessoal-govbr/serie-relatorios-gerenciais-genero"
+  ) 
+
+plotly::ggplotly(grafico_3.3) |> plotly::layout(yaxis = list(ticksuffix = "%"))
+```
+
+
+```{r, fig.width= 8}
+grafico_3.4 <- tab_3.4 %>%
+  ggplot(aes(
+    x = Categoria,
+    y = Percentual,
+    fill = Sexo
+  )
+  ) +
+  geom_bar(stat = "identity", width = 0.4) +
+  geom_text(aes(label = paste0(abs(Percentual*100), "%")),  size = 3, color = "black") +
+  scale_fill_manual(values = c("#ffaf51","#004580")) +
+  scale_y_continuous(breaks=seq(-1,1,0.25),
+                     limits = c(-0.95, 0.95),
+                     labels=paste0(abs(seq(-100,100,25)), "%"))+
+  coord_flip()+
+  theme_minimal()
+
+grafico_3.4 <- grafico_3.4 +
+  labs(
+    title = "Gráfico 4 – Percentual de ocupação de cargos de liderança em junho/2023",
+    x="",
+    y = "",
+    fill = "",
+    caption = "\n\nFonte: https://www.gov.br/servidor/pt-br/observatorio-de-pessoal-govbr/serie-relatorios-gerenciais-genero"
+  ) 
+
+plotly::ggplotly(grafico_3.4) |> plotly::layout(yaxis = list(ticksuffix = "%"))
+```
+
+### 3.2 Líderes com filhos menores de idade
+
+```{r, fig.width= 8}
+tab_3.5 <- df |> group_by(SEXO) |> 
+  count(`DEPENDENTE MENOR DE IDADE?`) |> 
+  tidyr::pivot_wider(
+    names_from = `DEPENDENTE MENOR DE IDADE?`,
+    values_from = n
+  ) |> 
+  rowwise()  |> 
+  mutate(
+    `Sem filhos menores de idade`= round(NÃO/sum(c_across(NÃO:SIM), na.rm = TRUE), 2),
+    `Com filhos menores de idade` = round(SIM/sum(c_across(NÃO:SIM), na.rm = TRUE), 2)
+  ) |> 
+  select(-NÃO, -SIM) |> 
+  tidyr::pivot_longer(
+  cols = c("Sem filhos menores de idade","Com filhos menores de idade"),
+  values_to = "Percentual") |> 
+  rename(Filhos = name)
+```
+
+
+Das mulheres em cargos de liderança, apenas 38% têm filhos menores de idade. Entre os homens, esse percentual sobe para de 47%. Estatisticamente, a chance de um homem em cargo de liderança ter filhos menores de idade é 1,5 vezes maior do que uma mulher nas mesmas condições ter filhos menores de idade.
+
+```{r, fig.width= 8}
+grafico_3.5 <- tab_3.5 %>%
+  ggplot(aes(
+    x = SEXO,
+    y = Percentual,
+    fill = Filhos
+  )
+  ) +
+  geom_bar(stat = "identity", width = 0.4) +
+  # geom_text(aes(label = paste0(abs(Percentual*100), "%")),
+  #           size = 3, position = "identity",
+  #           color = "white") +
+  scale_fill_manual(values = c("#ffaf51","#004580")) +
+  scale_y_continuous(breaks=seq(0,1,0.25),
+                     #limits = c(-0.95, 0.95),
+                     labels=paste0(abs(seq(0,100,25)), "%"))+
+  #coord_flip()+
+  theme_minimal()
+
+grafico_3.5 <- grafico_3.5 +
+  labs(
+    title = " Gráfico 5 – Percentual de líderes com filhos menores de idade (junho/2023)",
+    x="",
+    y = "",
+    fill = "",
+        caption = "\n\nFonte: https://www.gov.br/servidor/pt-br/observatorio-de-pessoal-govbr/serie-relatorios-gerenciais-genero"
+  ) 
+
+plotly::ggplotly(grafico_3.5) |> 
+  plotly::layout(yaxis = list(ticksuffix = "%")) |> 
+  plotly::layout(legend = list(orientation = "h", xanchor = "center", yanchor = "bottom", x = 0.5, y = -0.2))
+```
+
+### 3.3 Estado Civil
+
+```{r}
+library(forcats)
+
+tab_3.6 <- with(df, table(SEXO, `ESTADO CIVIL`))
+
+tab_3.6 <- prop.table(tab_3.6, 1 )
+
+tab_3.6 <- as_tibble(tab_3.6) |> 
+  mutate(
+    Percentual = round(n, 3),
+    `Estado Civil` = `ESTADO CIVIL`,
+    Sexo = SEXO
+    )  
+tab_3.6$`ESTADO CIVIL` <- fct_reorder(tab_3.6$`ESTADO CIVIL`, tab_3.6$Percentual)
+```
+
+
+50% das mulheres em cargos de liderança são casadas. Entre os homens, esse percentual sobe para 68%.
+
+```{r}
+grafico_3.6 <- tab_3.6 %>%
+  ggplot(aes(
+    x = SEXO,
+    y = Percentual,
+    fill = `ESTADO CIVIL`
+  )
+  ) +
+  geom_bar(stat = "identity", width = 0.4) +
+  scale_fill_manual(values = c("#808080", "#a0a0a0", "#c0c0c0", "#dfdfdf", "#ffaf51")) +
+  scale_y_continuous(breaks=seq(0,1,0.2),
+                     #limits = c(0, 1),
+                     labels=paste0(abs(seq(0,100,20)), "%"))+
+  #coord_flip()+
+  theme_minimal()
+
+grafico_3.6 <- grafico_3.6 +
+  labs(
+    title = " Gráfico 6 – Percentual de líderes por estado civil  (junho/2023)",
+    subtitle = "\n\nGênero",
+    x="",
+    y = "",
+    fill = "Estado Civil",
+    caption = "\n\nFonte: https://www.gov.br/servidor/pt-br/observatorio-de-pessoal-govbr/serie-relatorios-gerenciais-genero"
+  )
+
+plotly::ggplotly(grafico_3.6) |> 
+  plotly::layout(yaxis = list(ticksuffix = "%")) |> 
+  plotly::layout(legend = list(orientation = "h", xanchor = "center", yanchor = "bottom", x = 0.5, y = -0.2))
+```
+
+### 3.4 Cor/Etnia
+
+```{r}
+tab_3.7_2023 <- df |> mutate(
+  Etnia = case_when( 
+    `COR ORIGEM ETNICA` %in% c("PARDA", "PRETA") & SEXO == "Fem"  ~ "Mulheres Negras",
+    `COR ORIGEM ETNICA` %in% c("PARDA", "PRETA") & SEXO == "Mas"  ~ "Homens Negros",
+    `COR ORIGEM ETNICA` == "INDIGENA" & SEXO == "Mas"  ~ "Homens Indígenas",
+    `COR ORIGEM ETNICA` == "INDIGENA" & SEXO == "Fem"  ~ "Mulheres Indígenas",
+    `COR ORIGEM ETNICA` %in% c("AMARELA", "BRANCA", "NAO INFORMADO") & SEXO == "Fem"  ~ "Demais Mulheres",
+    `COR ORIGEM ETNICA` %in% c("AMARELA", "BRANCA", "NAO INFORMADO") & SEXO == "Mas"  ~ "Demais Homens",
+  )
+  ) 
+
+tab_3.7_2023 <- with(tab_3.7_2023, table(CATEGORIA, Etnia))
+
+tab_3.7_2023 <- prop.table(tab_3.7_2023, 1 )
+
+tab_3.7_2023 <- as_tibble(tab_3.7_2023) |> 
+  mutate(
+    Ano = "2023",
+    Percentual = round(n, 3)
+    )  
+
+# 2019
+
+tab_3.7_2019 <- df_19 |> mutate(
+  Etnia = case_when( 
+    `COR ORIGEM ETNICA` %in% c("PARDA", "PRETA") & SEXO == "Fem"  ~ "Mulheres Negras",
+    `COR ORIGEM ETNICA` %in% c("PARDA", "PRETA") & SEXO == "Mas"  ~ "Homens Negros",
+    `COR ORIGEM ETNICA` == "INDIGENA" & SEXO == "Mas"  ~ "Homens Indígenas",
+    `COR ORIGEM ETNICA` == "INDIGENA" & SEXO == "Fem"  ~ "Mulheres Indígenas",
+    `COR ORIGEM ETNICA` %in% c("AMARELA", "BRANCA", "NAO INFORMADO") & SEXO == "Fem"  ~ "Demais Mulheres",
+    `COR ORIGEM ETNICA` %in% c("AMARELA", "BRANCA", "NAO INFORMADO") & SEXO == "Mas"  ~ "Demais Homens",
+  )
+  ) 
+
+tab_3.7_2019 <- with(tab_3.7_2019, table(CATEGORIA, Etnia))
+
+tab_3.7_2019 <- prop.table(tab_3.7_2019, 1 )
+
+tab_3.7_2019 <- as_tibble(tab_3.7_2019) |> 
+   mutate(
+    Ano = "2019",
+    Percentual = round(n, 3)
+    ) 
+
+# combinar
+
+tab_3.7 <- dplyr::bind_rows(tab_3.7_2019, tab_3.7_2023) |> 
+  mutate(
+    Etnia = factor(Etnia, levels = c("Mulheres Negras", "Mulheres Indígenas", "Demais Mulheres", "Homens Negros", "Homens Indígenas","Demais Homens")
+    )
+  )
+```
+
+
+A presença de mulheres negras e indígenas em cargos de liderança aumentou entre 2019 e 2023. Assim como a presença de homens negros e indígenas nesses mesmos cargos.
+
+```{r, fig.width= 8, fig.height=6}
+grafico_3.7 <- ggplot(tab_3.7) +
+  aes(x = Ano, y = Percentual, fill = Etnia) +
+  geom_col(width = 0.4) +
+  scale_fill_manual(values = c("#f9a830", "#ac670c", "#f2aa49", "#4122d9","#dfdfdf", "#0f04fc")) +
+  scale_y_continuous(breaks=seq(0,1,0.2),
+                     #limits = c(0, 1),
+                     labels=paste0(abs(seq(0,100,20)), "%"))+
+  coord_flip() +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  facet_wrap(vars(CATEGORIA))
+
+grafico_3.7 <- grafico_3.7 +
+  labs(
+    title = " Gráfico 7 – Composição dos líderes por raça/etnia (junho/19 e junho/23) ",
+    subtitle = "\n\nGênero",
+    x="",
+    y = "",
+    fill = "",
+    caption = "\n\nFonte: https://www.gov.br/servidor/pt-br/observatorio-de-pessoal-govbr/serie-relatorios-gerenciais-genero"
+  )
+
+plotly::ggplotly(grafico_3.7) |> 
+  plotly::layout(legend = list(orientation = "h", xanchor = "center", yanchor = "bottom", x = 0.5, y = -0.2))
+```
+
+```{r,  fig.width= 8}
+
+tabela_Fem <- df |> 
+   mutate(
+  `Cor/Etnia` = case_when( 
+    `COR ORIGEM ETNICA` %in% c("PARDA", "PRETA")  ~ "NEGRA",
+    .default = as.character(`COR ORIGEM ETNICA`)
+    )
+  ) |> 
+  count(SEXO, `Cor/Etnia`, EQUIVALENCIA) |> 
+  tidyr::pivot_wider(names_from = EQUIVALENCIA,
+                     values_from = n,
+                     values_fill = 0) |>
+  dplyr::filter(SEXO =="Fem") |> 
+  select(-SEXO) |> 
+  rowwise() |>
+     mutate(
+       Total =sum(c_across(`DAS-1`:NE), na.rm = TRUE) 
+     ) |> janitor::adorn_totals()
+
+tabela_Mas <- df |> 
+   mutate(
+  `Cor/Etnia` = case_when( 
+    `COR ORIGEM ETNICA` %in% c("PARDA", "PRETA")  ~ "NEGRA",
+    .default = as.character(`COR ORIGEM ETNICA`)
+    )
+  ) |> 
+  count(SEXO, `Cor/Etnia`, EQUIVALENCIA) |> 
+  tidyr::pivot_wider(names_from = EQUIVALENCIA,
+                     values_from = n,
+                     values_fill = 0) |>
+  dplyr::filter(SEXO =="Mas") |> 
+  select(-SEXO) |> 
+  rowwise() |>
+     mutate(
+       Total =sum(c_across(`DAS-1`:NE), na.rm = TRUE) 
+     ) |> janitor::adorn_totals()
+
+library(gt)
+
+tabela_Fem |> 
+  gt::gt(rowname_col = "Cor/Etnia") |> 
+  tab_header(
+    title = "Mulheres",
+    subtitle = "Cor/Etnia por Cargos"
+  ) |> 
+  fmt_number(
+    columns = where(is.numeric),
+    sep_mark = ".",
+    dec_mark = ",", 
+    decimals = 0
+  )
+
+tabela_Mas |> 
+  gt::gt(rowname_col = "Cor/Etnia") |> 
+  tab_header(
+    title = "Homens",
+    subtitle = "Cor/Etnia por Cargos"
+  ) |> 
+  fmt_number(
+    columns = where(is.numeric),
+    sep_mark = ".",
+    dec_mark = ",", 
+    decimals = 0
+  )
+```
+
+### 3.5 Idade
+
+A média de idade entre as mulheres ocupantes de cargo de liderança é menor que a dos homens, qualquer que seja o nível de liderança.
+
+```{r,  fig.width= 8}
+tab_3.8 <- df |> group_by(EQUIVALENCIA, SEXO) |> 
+  summarise(
+    Média = round(mean(IDADE),0)
+  )
+
+grafico_3.8 <- ggplot(tab_3.8) +
+  aes(x = EQUIVALENCIA, y = Média, fill = SEXO) +
+  geom_col(position = "dodge") +
+ # geom_text(aes(label = Média),hjust = -0.5, size = 3, color = "black") +
+  scale_fill_manual(values = c("#ffaf51","#004580"))+
+  #scale_fill_hue(direction = 1) +
+  labs(
+    x = "",
+    y = "",
+    title = "Gráfico 8 – Média de idade dos líderes (junho/2023)",
+    fill = ""
+  ) +
+  coord_flip() +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+
+plotly::ggplotly(grafico_3.8) |> 
+  plotly::layout(legend = list(orientation = "h", xanchor = "center", yanchor = "bottom", x = 0.5, y = -0.2))
+```
+
+Agrupando os cargos de liderança em Média e Alta Liderança, é possível observar de forma mais resumida a diferença entre as médias de idade dos líderes por gênero. Ao analisar a idade média do total de servidores, observa-se que a média feminina se mantém abaixo da masculina.
+
+```{r,  fig.width= 8, fig.height=6}
+tab_3.9 <- df |> group_by(CATEGORIA, SEXO) |> 
+  summarise(
+    media = round(mean(IDADE),0)
+  ) |> ungroup() |> 
+  dplyr::add_row(CATEGORIA = "Total de Servidores", SEXO = "Fem", media = 46) |> 
+  dplyr::add_row(CATEGORIA = "Total de Servidores", SEXO = "Mas", media = 48)
+
+grafico_3.9 <- ggplot(tab_3.9) +
+  aes(x = CATEGORIA, y = media, fill = SEXO) +
+  geom_col(position = "dodge") +
+  scale_fill_manual(values = c("#ffaf51","#004580"))+
+  #scale_fill_hue(direction = 1) +
+  labs(
+    x = "",
+    y = "",
+    title = "Gráfico 9 – Média de idade dos servidores e lideranças (junho/2023)",
+    fill = " "
+  ) +
+  coord_flip() +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+
+plotly::ggplotly(grafico_3.9) |> 
+  plotly::layout(legend = list(orientation = "h", xanchor = "center", yanchor = "bottom", x = 0.5, y = -0.2))
+```
+
+
+### 3.6 Média de Idade x Filhos Menores de Idade
+
+Entre os líderes com filhos menores de idade, a média de idade das mulheres é 43 anos  e a dos homens, 46 anos. Já entre os líderes sem filhos menores de idade, a média de idade das mulheres se aproxima mais da dos homens, 50 para mulheres e 51 para homens.
+
+```{r, fig.width= 10}
+tab_3.10 <- df |> group_by(EQUIVALENCIA, SEXO, `DEPENDENTE MENOR DE IDADE?`) |> 
+  summarise(
+    media = round(mean(IDADE),0)
+  ) |> ungroup() 
+
+grafico_3.10 <- ggplot(tab_3.10) +
+  aes(x = EQUIVALENCIA, y = media, fill = `DEPENDENTE MENOR DE IDADE?`) +
+  geom_col(position = "dodge") +
+  scale_fill_brewer(palette = "Greens", direction = 1) +
+  labs(
+    x = "",
+    y = "",
+    title = "Gráfico 10 – Relação entre média de idade dos líderes e a existência de filhos menores de idade, por nível de cargo (junho/2023)",
+    fill = "Dependente Menor de Idade?"
+  ) +
+  coord_flip() +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  facet_wrap(vars(SEXO))+
+   theme(text = element_text(size = 10))  # Ajustando o tamanho padrão da fonte do gráfico
+
+
+plotly::ggplotly(grafico_3.10) |> 
+  plotly::layout(legend = list(orientation = "h", xanchor = "center", yanchor = "bottom", x = 0.5, y = -0.2))
+```
+ 
+Analisando os dados agrupados por Média e Alta liderança, é possível observar a mesma relação entre média de idade, gênero e existência de filhos menores de idade.
+
+```{r, ,fig.width= 10}
+tab_3.11 <- df |> group_by(CATEGORIA, SEXO, `DEPENDENTE MENOR DE IDADE?`) |> 
+  summarise(
+    media = round(mean(IDADE),0)
+  ) |> ungroup() 
+
+grafico_3.11 <- ggplot(tab_3.11) +
+  aes(x = CATEGORIA, y = media, fill = `DEPENDENTE MENOR DE IDADE?`) +
+  geom_col(position = "dodge") +
+  scale_fill_brewer(palette = "Greens", direction = 1) +
+  labs(
+    x = "",
+    y = "",
+    title = "Gráfico 11 – Relação entre média de idade dos líderes e a existência de filhos menores de idade, por agrupamento",
+    fill = "Dependente Menor de Idade?"
+  ) +
+  coord_flip() +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  facet_wrap(vars(SEXO))+
+   theme(text = element_text(size = 10))  # Ajustando o tamanho padrão da fonte do gráfico
+
+plotly::ggplotly(grafico_3.11) |> 
+  plotly::layout(legend = list(orientation = "h", xanchor = "center", yanchor = "bottom", x = 0.5, y = -0.2))
+```
+
+### 3.7 Pessoa com Deficiência (PCD)
+
+Dentre o total de servidoras do sexo feminino, o percentual de PCD é de 1,1%. Analisando apenas as mulheres em cargos de Média Liderança, esse percentual vai para 0,9%. E, entre as mulheres com cargos de Alta Liderança, esse percentual cai para 0,5%.
+
+```{r} 
+tab_3.11 <- df_pcd |> mutate(
+  PCD = case_when( 
+      `DEFICIÊNCIA FÍSICA` != "S/Info"  ~ "PCD",
+    .default = as.character(`DEFICIÊNCIA FÍSICA`)
+    )) |> group_by(SEXO , PCD) |> 
+  summarise(Total = sum(Ativo)) |> 
+  ungroup() |> 
+  tidyr::pivot_wider(names_from =PCD,
+                     values_from = Total)  |> 
+  rowwise()  |> 
+  mutate(
+    Total = sum(c_across(PCD:`S/Info`), na.rm = TRUE
+    )
+  ) 
+
+tab_3.11 <- tab_3.11 |> 
+mutate(
+  Percentual= round(PCD/Total, 3 ),
+  CATEGORIA = "Total de Servidores"
+  ) |> relocate(CATEGORIA, dplyr::everything())
+ 
+```
+
+
+```{r} 
+df_pcd <- df |> 
+  mutate(
+      PCD = case_when( 
+      `DEFICIÊNCIA FÍSICA` != "S/Info"  ~ "PCD",
+    .default = as.character(`DEFICIÊNCIA FÍSICA`)
+    )
+  )
+
+tab_3.12 <- with(df_pcd, table(CATEGORIA, PCD, SEXO))
+
+tab_3.12 <- as_tibble(tab_3.12)
+
+tab_3.12 <- tab_3.12 |> 
+tidyr::pivot_wider(names_from =PCD,
+                     values_from = n)  |> 
+  rowwise()  |> 
+  mutate(
+    Total = sum(c_across(PCD:`S/Info`), na.rm = TRUE
+    )
+  ) 
+
+tab_3.12 <- tab_3.12 |> 
+mutate(
+  Percentual= round(PCD/Total, 3 )
+)
+
+#Combinar
+
+tab_3.13 <- dplyr::bind_rows(tab_3.11, tab_3.12) |> 
+  mutate(
+    imagem = "img/Capturar.JPG"
+  )
+```
+
+```{r}
+library(ggtextures)
+tab_3.13 |> filter(SEXO == "Fem") |> 
+ggplot( ) +
+  aes(x = CATEGORIA, y = scales::percent(Percentual), image = imagem) +
+  geom_text(aes(label = paste0(Percentual*100, "%")), vjust = -0.5, size = 4, color = "black") +
+  geom_textured_col(img_width = unit(0.5, "null")) +
+  labs(
+    x = "",
+    y = "",
+    title = "Gráfico 12 – Percentual de PCD entre as mulheres (junho/2023)",
+  ) +
+  theme_minimal() 
+# +
+#   facet_wrap(vars(SEXO), nrow = 2)
+```
+
+Dentre o total de servidores do sexo masculino, o percentual de PCD é de 1,3%. Analisando apenas os homens em cargos de Média Liderança, esse percentual se mantém em 1,3%. E, entre os homens com cargos de Alta Liderança, esse percentual cai para 0,4%.
+
+```{r}
+tab_3.13 |> filter(SEXO == "Mas") |> 
+ggplot( ) +
+  aes(x = CATEGORIA, y = scales::percent(Percentual), image = imagem) +
+  geom_text(aes(label = paste0(Percentual*100, "%")), vjust = -0.5, size = 4, color = "black") +
+  geom_textured_col(img_width = unit(0.5, "null")) +
+  labs(
+    x = "",
+    y = "",
+    title = "Gráfico 13 – Percentual de PCD entre os homens (junho/2023)",
+  ) +
+  theme_minimal() 
+```
+
+### 3.8 Escolaridade
+
+No conjunto total de servidores do Governo Federal, 78% dos homens e 85% das mulheres possuem escolaridade de nível superior ou maior. 
+
+Entre os ocupantes de cargos de Alta Liderança, 98% possuem escolaridade de nível superior ou maior, independente do gênero. 
+
+Contudo, entre os ocupantes de cargos de Média Liderança, o percentual de mulheres com escolaridade de nível superior ou maior é ligeiramente maior (90%) que os ocupantes do sexo masculino (87%).
+
+### 3.9 Nome Social
+
+O Decreto nº 8.727, de 28 de abril de 2016, dispõe sobre o uso do nome social e o reconhecimento da identidade de gênero de pessoas travestis e transexuais no âmbito da administração pública federal direta, autárquica e fundacional. Esse decreto considera como Nome Social a designação pela qual a pessoa travesti ou transexual se identifica e é socialmente reconhecida. Entretanto, a maioria dos registros cadastrais de Nome Social no SIAPE corresponde ao mesmo nome de registro do servidor ou uma variação deste.
+
+Analisando criteriosamente os 96 cadastros de líderes no SIAPE em que o campo Nome Social está preenchido, identificamos que apenas um ocupante de cargo de liderança tem registro de Nome Social de acordo com o Decreto 8.727/16.
+
+Expandindo a análise para o total de servidores, observamos que apenas 8 dos 1.259 cadastros com Nome Social possuem registro compatível com o Decreto 8.727/16.
+
+## 4. Fontes e metodologia Base de Dados
+
+A fonte primária para a obtenção das informações apresentadas é o
+Sistema Integrado de Administração de Pessoal (SIAPE) e no [**Painel
+Estatístico de Pessoal
+(PEP).**](http://painel.pep.planejamento.gov.br){target="_blank"}
+
+Outras fontes:
+
+[**Convenção
+OIT**](http://www.planalto.gov.br/ccivil_03/_Ato2019-2022/2019/Decreto/D10088.htm#art5){target="_blank"}
+
+[**Banco
+Mundial**](https://www.worldbank.org/pt/news/press-release/2019/02/27/despite-gains-women-face-setbacks-in-legal-rights-affecting-work){target="_blank"}
+
+[**Constituição
+Federal**](http://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm){target="_blank"}
+
+## 5. Revisões
+
+A revisões são realizadas anualmente, conforme necessário, como
+resultado de atualização de base de dados.
+
+## 6. Institucional
+
+-   Sergio Eduardo Arbulu Mendonça- Secretário
+
+-   Antônio Fiuza de Sousa Landim -- Diretor
+
+-   Mirian Lucia Bittencourt Guimarães -- Coordenadora-Geral
+
+    Equipe técnica
+
+-   Luana Correa Silva Rodrigues
+
+-   Luciana Santos Ferreira
+
+-   Marcelo Rodrigues Ribeiro
+
+## 7. Contato
+
+Coordenação-Geral de Informações Gerenciais -- CGINF
+
+Departamento de Soluções Digitais e Informações Gerenciais -- Ministério
+da Economia
+
+Esplanada dos Ministério, Bloco C, 9º andar, sala 940
+
+70297-400 -- Brasília/DF
+
+Tel: (61) 2020-1179 E-mail:
+[sgp.cginf\@economia.gov.br](mailto:sgp.cginf@economia.gov.br){.email}
 
