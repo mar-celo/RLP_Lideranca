@@ -1,0 +1,206 @@
+---
+title: "Untitled"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+    theme: flatly
+    favicon: favicon.png
+params:
+  uf: "BA"
+  ano_idh: "1991"
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+```
+
+# Aba 1
+
+## Column {data-width="650"}
+
+### Chart A
+
+```{r}
+library(magrittr)
+library(sf)
+library(ggplot2)
+
+municipios <- readr::read_rds("municipios_todos.rds")
+p <- abjData::pnud_min %>%
+  dplyr::filter(uf_sigla == params$uf, ano == params$ano_idh) %>% 
+  dplyr::mutate(code_muni = as.numeric(muni_id)) %>% 
+  dplyr::inner_join(municipios, "code_muni") %>% 
+  sf::st_as_sf() %>% 
+  ggplot() +
+  geom_sf(aes(fill = idhm), colour = "black", size = .2) +
+  scale_fill_viridis_c(begin = .2, end = .8, option = "A") +
+  theme_void()
+
+## pesado!
+# plotly::ggplotly(p)
+p
+```
+
+## Column {data-width="350"}
+
+### Chart B
+
+```{r}
+abjData::pnud_min %>% 
+  dplyr::filter(uf_sigla == params$uf, ano == params$ano_idh) %>% 
+  dplyr::select(ano, muni_nm, dplyr::starts_with("idhm")) %>% 
+  DT::datatable(options = list(pageLength = 20))
+```
+
+# Aba 2
+
+### Caixa grande!
+
+```{r}
+data <- readr::read_csv(
+file = "https://raw.githubusercontent.com/zpio/datasets/main/sample_superstore.csv"
+)
+
+```
+
+```{r}
+library(scales)
+
+df <- data %>%
+group_by(region) %>%
+summarise(total_sales = sum(sales))
+df
+
+ggplot(df, aes(x = reorder(region, total_sales), y = total_sales)) +
+geom_bar(stat = "identity", width = 0.5, fill = "steelblue") +
+geom_text(
+aes(label = label_number(scale = 1e-3, suffix = 'K', prefix = '$')(total_sales)),
+hjust = -0.1,
+color = "gray30",
+) +
+scale_y_continuous(
+breaks = seq(0, 600000, by = 200000),
+labels = label_number(scale_cut = cut_short_scale()),
+expand = expansion(mult = c(0.01, 0.15))
+) +
+labs(title = "BAR CHART", y = NULL, x = NULL) +
+coord_flip() +
+theme_minimal(base_size = 14) +
+theme(
+panel.grid.minor = element_blank(),
+panel.grid.major.y = element_blank()
+)
+
+
+```
+
+```{r}
+ grafico_3.1 <- tab_3.1 %>%
+  ggplot(aes(
+    x = Cargo,
+    y = Total,
+    fill = Sexo
+  )
+  ) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(
+    label = label_number(
+      scale = 1,
+      big.mark = ".",
+      decimal.mark = ",")(abs(Total)), y = Total +50),
+    #position = position_dodge(width = 0.9),
+    hjust = ifelse(tab_3.1$Total < 0, 1.1, -0.1),  
+   # nudge_y = 20, 
+    size = 3, 
+    color = "black") +  # Ajustando a posição e tamanho dos rótulos de dados
+  scale_fill_manual(values = c( "#004580", "#ffaf51")) +
+  scale_y_continuous(breaks=seq(-7000,7000,2500),
+                     limits = c(-7500, 8000),                     labels=paste0(abs(seq(-7000,7000,2500))))+
+  coord_flip()+
+  labs(
+    title = "Gráfico 1 – Quantitativo de ocupantes de cargos de liderança em jun/2023",
+    x="",
+    y = "",
+    fill = "",
+    caption = "\n\nFonte: https://www.gov.br/servidor/pt-br/observatorio-de-pessoal-govbr/"
+  ) +
+  theme_minimal()+
+  theme(text = element_text(size = 10)) 
+```
+
+```{r}
+grafico_interativo <- plotly::ggplotly(grafico_3.1) %>%
+  plotly::layout(
+    legend = list(orientation = "h", xanchor = "center", yanchor = "bottom", x = 0.5, y = -0.2)
+    # Aqui você pode adicionar mais opções de layout, se necessário
+  )
+
+# Exibir o gráfico interativo
+grafico_interativo
+```
+
+
+```{r}
+library(ggplot2)
+library(plotly)
+
+# Criar um exemplo de conjunto de dados
+dados <- data.frame(
+  Categoria = c("A", "B", "C", "D"),
+  Valor = c(10, 25, 15, 30)
+)
+
+# Criar o gráfico de barras com rótulos fora das barras
+grafico_3.1 <- ggplot(dados, aes(x = Categoria, y = Valor)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = Valor, y = Valor + 2), position = position_dodge(width = 0.9)) +
+  labs(title = "Gráfico de Barras com Rótulos Externos")
+
+# Converter o gráfico em um gráfico interativo do Plotly
+grafico_interativo <- plotly::ggplotly(grafico_3.1)
+
+# Exibir o gráfico interativo
+grafico_interativo
+
+```
+
+```{r}
+grafico_3.2 <- tab_3.2 %>%
+  ggplot(aes(
+    x = Cargo,
+    y = Percentual,
+    fill = Sexo
+  )) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(
+      label = label_number(
+      scale = 1e2,
+      suffix = '%',
+      big.mark = ".",
+      decimal.mark = ",")(abs(Percentual)), y = Percentual + 0.10), 
+       hjust = ifelse(tab_3.2$Percentual < 0, 2.5, 0.1),
+            size = 3, 
+            color = "black") +  # Ajustando a posição e tamanho dos rótulos de dados
+  scale_fill_manual(values = c("#004580", "#ffaf51")) +
+  scale_y_continuous(breaks=seq(-1,1,0.25),
+                     limits = c(-0.95, 0.95),
+                     labels=paste0(abs(seq(-100,100,25)), "%"))+
+  coord_flip()+
+  theme_minimal()+ theme(
+    #text = element_text(size = 10),
+    legend.position = "bottom"  # Adicionando a posição da legenda
+  )
+
+grafico_3.2 <- grafico_3.2 +
+  labs(
+    title = "Gráfico 2 – Percentual de ocupação de cargos de liderança por gênero",
+    subtitle = "Jun/2023",
+    x="",
+    y = "",
+    fill = "",
+    caption = "Fonte: https://www.gov.br/servidor/pt-br/observatorio-de-pessoal-govbr"
+  ) 
+grafico_3.2
+```
+

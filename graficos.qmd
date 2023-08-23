@@ -1,0 +1,214 @@
+---
+title: "Gráficos"
+format: html
+---
+
+## Exemplos de gráficos
+
+```{r}
+#| echo: false
+#| warning: false
+
+library(dplyr)
+library(plotly)
+head(iris)
+Scatter <- plot_ly(data = iris, 
+                   x = ~Sepal.Length, 
+                   y = ~Petal.Length, 
+                   color = ~Species,
+                   type = 'scatter', 
+                   mode = 'markers') %>%
+  layout(xaxis = list(title = "Comprimento da sépala"),
+         yaxis = list(title = "Comprimento da pétala")) 
+  
+
+Scatter
+```
+
+```{r}
+#| echo: false
+#| warning: false
+Data.dumbbell <- read.csv("https://raw.githubusercontent.com/plotly/datasets/master/school_earnings.csv")
+
+Data.dumbbell$School <- factor(Data.dumbbell$School, 
+                               levels = Data.dumbbell$School[order(Data.dumbbell$Men)])
+
+
+head(Data.dumbbell)
+##      School Women Men Gap
+## 1       MIT    94 152  58
+## 2  Stanford    96 151  55
+## 3   Harvard   112 165  53
+## 4    U.Penn    92 141  49
+## 5 Princeton    90 137  47
+## 6   Chicago    78 118  40
+Dumbbell <- plot_ly(Data.dumbbell,
+                    color = I("gray80")) %>% 
+  add_segments(x = ~Women, 
+               xend = ~Men, 
+               y = ~School, 
+               yend = ~School, 
+               showlegend = FALSE) %>% 
+  add_markers(x = ~Women, 
+              y = ~School, 
+              name = "Women", 
+              color = I("pink")) %>% 
+  add_markers(x = ~Men, 
+              y = ~School, 
+              name = "Men", 
+              color = I("blue")) %>% 
+  layout(title = "Gender earnings disparity",
+         xaxis = list(title = "Annual Salary (in thousands)"),
+         margin = list(l = 65))
+
+Dumbbell
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| fig-height: 10
+#| fig-width: 10
+Data.bmap <- read.csv('https://raw.githubusercontent.com/plotly/datasets/master/2014_us_cities.csv')
+
+Data.bmap$q <- with(Data.bmap, 
+                    cut(pop, 
+                        quantile(pop)))
+
+levels(Data.bmap$q) <- paste(c("1st", 
+                               "2nd", 
+                               "3rd", 
+                               "4th", 
+                               "5th"), 
+                             "Quantile")
+Data.bmap$q <- as.ordered(Data.bmap$q)
+
+head(Data.bmap)
+##            name     pop      lat        lon            q
+## 1     New York  8287238 40.73060  -73.98658 4th Quantile
+## 2  Los Angeles  3826423 34.05372 -118.24273 4th Quantile
+## 3      Chicago  2705627 41.87555  -87.62442 4th Quantile
+## 4      Houston  2129784 29.75894  -95.36770 4th Quantile
+## 5 Philadelphia  1539313 39.95233  -75.16379 4th Quantile
+## 6      Phoenix  1465114 33.44677 -112.07567 4th Quantile
+g <- list(scope = 'usa',
+          projection = list(type = 'albers usa'),
+          showland = TRUE,
+          landcolor = toRGB("gray85"),
+          subunitwidth = 1,
+          countrywidth = 1,
+          subunitcolor = toRGB("white"),
+          countrycolor = toRGB("white"))
+
+Bubble.map <- plot_geo(Data.bmap, 
+                       locationmode = 'USA-states', 
+                       sizes = c(1, 250)) %>% 
+  add_markers(x = ~lon, 
+              y = ~lat, 
+              size = ~pop, 
+              color = ~q, 
+              hoverinfo = "text",
+              text = ~paste(Data.bmap$name, "<br />", 
+                            Data.bmap$pop/1e6, 
+                            " million")) %>% 
+  layout(title = '2014 US city populations<br>(Click legend to toggle)', 
+         geo = g)
+
+Bubble.map
+
+```
+
+```{r}
+#| echo: false
+#| warning: false
+library(gapminder)
+
+Banco.de.dados <- gapminder 
+head(Banco.de.dados)
+## # A tibble: 6 x 6
+##   country     continent  year lifeExp      pop gdpPercap
+##   <fct>       <fct>     <int>   <dbl>    <int>     <dbl>
+## 1 Afghanistan Asia       1952    28.8  8425333      779.
+## 2 Afghanistan Asia       1957    30.3  9240934      821.
+## 3 Afghanistan Asia       1962    32.0 10267083      853.
+## 4 Afghanistan Asia       1967    34.0 11537966      836.
+## 5 Afghanistan Asia       1972    36.1 13079460      740.
+## 6 Afghanistan Asia       1977    38.4 14880372      786.
+
+
+figura <- Banco.de.dados %>%
+  plot_ly(x = ~gdpPercap, 
+          y = ~lifeExp, 
+          size = ~pop, 
+          color = ~continent, 
+          frame = ~year, 
+          text = ~country, 
+          hoverinfo = "text",
+          type = 'scatter',
+          mode = 'markers') %>% 
+  layout(xaxis = list(type = "log",
+                      title = "PIB per capita"),
+         yaxis = list(title = "Expectativa de vida"))
+
+figura
+```
+
+```{r}
+#| echo: false
+#| warning: false
+
+library(plotly)
+
+accumulate_by <- function(dat, var) {
+  var <- lazyeval::f_eval(var, dat)
+  lvls <- plotly:::getLevels(var)
+  dats <- lapply(seq_along(lvls), function(x) {
+    cbind(dat[var %in% lvls[seq(1, x)], ], frame = lvls[[x]])
+  })
+  dplyr::bind_rows(dats)
+}
+
+Data.txhousing <- txhousing %>%
+  filter(year > 2005, 
+         city %in% c("Abilene", "Bay Area")) %>% 
+  accumulate_by(~date)
+
+head(Data.txhousing)
+##       city year month sales   volume median listings inventory     date
+## 1  Abilene 2006     1   107 11890000  90800      559       3.4 2006.000
+## 2 Bay Area 2006     1   367 58297417 133100     3038       5.7 2006.000
+## 3  Abilene 2006     1   107 11890000  90800      559       3.4 2006.000
+## 4  Abilene 2006     2   152 16875000  98200      561       3.4 2006.083
+## 5 Bay Area 2006     1   367 58297417 133100     3038       5.7 2006.000
+## 6 Bay Area 2006     2   471 77665581 138900     3157       5.8 2006.083
+##      frame
+## 1 2006.000
+## 2 2006.000
+## 3 2006.083
+## 4 2006.083
+## 5 2006.083
+## 6 2006.083
+
+fig <- Data.txhousing %>%
+  plot_ly(x = ~date, 
+          y = ~median,
+          split = ~city,
+          frame = ~frame, 
+          type = 'scatter',
+          mode = 'lines', 
+          line = list(simplyfy = F)) %>% 
+  layout(xaxis = list(title = "Date",
+                      zeroline = F),
+  yaxis = list(title = "Median",
+               zeroline = F))  %>% 
+  animation_opts(frame = 100,
+                 transition = 0,
+                 redraw = FALSE) %>% 
+  animation_slider(hide = T) %>% 
+  animation_button(x = 1, 
+                   xanchor = "right", 
+                   y = 0, 
+                   yanchor = "bottom")
+
+fig
+```

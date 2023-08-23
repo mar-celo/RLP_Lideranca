@@ -19,9 +19,10 @@ vignette: >
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, error = FALSE, warning = FALSE)
 ```
 
-## 1. Sumário Executivo
+# 1. Sumário Executivo
 
 O presente relatório tem como objetivo descrever o perfil dos ocupantes de cargos comissionados e funções de confiança de liderança do Poder Executivo Federal Civil, abrangendo os órgãos da Administração Direta, Autárquica e Fundacional. Os dados trabalhados são oriundos do Sistema Integrado de Administração de Recursos Humanos -- SIAPE.
+
 
 Segundo o disposto na Convenção nº 111 da Organização Internacional do Trabalho (OIT), toda distinção, exclusão ou preferência fundada na raça, cor, sexo, religião, opinião política, ascendência nacional ou origem social que tenha por efeito destruir ou alterar a igualdade em matéria de emprego ou profissão é ato discriminatório. Não sendo consideradas discriminatórias, no entanto, as distinções, exclusões ou preferências fundadas em qualificações exigidas para um determinado emprego.
 
@@ -41,43 +42,38 @@ São considerados como Cargos de Liderança as Funções de Confiança e os Carg
 
 O inciso V do artigo 37 da Constituição Federal, assim dispõe:
 
-> (...) V - as funções de confiança, exercidas exclusivamente por servidores ocupantes de cargo efetivo, e os cargos  em comissão, > a serem preenchidos por servidores de carreira nos casos, condições e percentuais mínimos previstos em lei, destinam-se apenas 
-> às atribuições de direção, chefia e assessoramento; (...)
+> (...) V - as funções de confiança, exercidas exclusivamente por servidores ocupantes de cargo efetivo, e os cargos em comissão, \> a serem preenchidos por servidores de carreira nos casos, condições e percentuais mínimos previstos em lei, destinam-se apenas às atribuições de direção, chefia e assessoramento; (...)
 
 A partir do texto acima, observa-se que o cargo de provimento em comissão é aquele cujo provimento independe de concurso público, destinado apenas às atribuições de direção, chefia e assessoramento, podendo ser preenchido por pessoa que não seja servidor de carreira, observando-se o percentual mínimo reservado pela lei aos servidores efetivos. Com relação à Função de Confiança, ela é atribuída a um servidor efetivo que já pertence aos quadros da administração.
 
-Os cargos em comissão do Grupo-Direção e Assessoramento Superiores (DAS) possuem níveis que variam de 1 até 6. Os níveis 1 e 2 são mais relacionados a atividades operacionais. Já o 3 é atribuído aos coordenadores. O nível 4 geralmente equivale a coordenador-geral; o 5 a diretor e o 6 a secretário nacional ou presidente de fundação. Há ainda os Cargos de Natureza Especial (NES) que incluem os secretários especiais, os ministros de estado, os secretários-executivos, entre outros cargos.
-A Lei nº 13.346, de 10 de outubro de 2016, criou as Funções Comissionadas do Poder Executivo (FCPE) que se equiparam, para todos os efeitos legais e regulamentares, aos cargos em comissão DAS de mesmo nível.
+Os cargos em comissão do Grupo-Direção e Assessoramento Superiores (DAS) possuem níveis que variam de 1 até 6. Os níveis 1 e 2 são mais relacionados a atividades operacionais. Já o 3 é atribuído aos coordenadores. O nível 4 geralmente equivale a coordenador-geral; o 5 a diretor e o 6 a secretário nacional ou presidente de fundação. Há ainda os Cargos de Natureza Especial (NES) que incluem os secretários especiais, os ministros de estado, os secretários-executivos, entre outros cargos. A Lei nº 13.346, de 10 de outubro de 2016, criou as Funções Comissionadas do Poder Executivo (FCPE) que se equiparam, para todos os efeitos legais e regulamentares, aos cargos em comissão DAS de mesmo nível.
 
 A Portaria nº 121, de 27 de março de 2019, divulgou as tabelas de equivalência entre os cargos em comissão do Grupo-Direção e Assessoramento Superiores (DAS) e Funções Gratificadas (FG) do Poder Executivo Federal com os cargos e funções integrantes da Administração Pública Federal direta e indireta. Essa equivalência aplica-se à toda a Administração Pública Federal, inclusive aos Órgãos, Autarquias e Fundações que não tenham em sua estrutura cargos em comissão do Grupo-Direção e Assessoramento Superiores (DAS) e Funções Gratificadas (FG) do Poder Executivo.
 
 Em setembro de 2021, o Governo Federal publicou a Lei nº 14.204/2021, que simplificou a gestão de cargos e de funções de confiança na Administração Pública Federal, dispondo sobre a instituição dos Cargos Comissionados Executivos (CCE) e as Funções Comissionadas Executivas (FCE). O artigo 5º da Lei determina que as menções aos cargos em comissão do Grupo DAS existentes na legislação passam a referir-se também aos CCE e às FCE.
 
-Posteriormente, foi publicado o Decreto nº 10.829, de 5 de outubro de 2021, por meio do qual a Lei nº 14.204/21 foi regulamentada. O Anexo III desse decreto apresenta a relação entre cargos em comissão do Grupo-Direção e Assessoramento Superiores (DAS), de Funções Comissionadas do Poder Executivo (FCPE), Cargos Comissionados Executivos (CCE) e Funções Comissionadas Executivas (FCE).  E, considerando a divisão em categorias apresentada no Anexo I do mesmo decreto, não foram considerados como Cargos de Liderança as Funções Comissionadas Executivas (FCE) de categoria Assessoramento Técnico Especializado (FCE 4.01 a FCE 4.13).
+Posteriormente, foi publicado o Decreto nº 10.829, de 5 de outubro de 2021, por meio do qual a Lei nº 14.204/21 foi regulamentada. O Anexo III desse decreto apresenta a relação entre cargos em comissão do Grupo-Direção e Assessoramento Superiores (DAS), de Funções Comissionadas do Poder Executivo (FCPE), Cargos Comissionados Executivos (CCE) e Funções Comissionadas Executivas (FCE). E, considerando a divisão em categorias apresentada no Anexo I do mesmo decreto, não foram considerados como Cargos de Liderança as Funções Comissionadas Executivas (FCE) de categoria Assessoramento Técnico Especializado (FCE 4.01 a FCE 4.13).
 
 Desse modo, considerando-se todos os normativos supracitados, a tabela a seguir demonstra as equivalências consideradas nesse relatório. Nos gráficos que apresentam dados segmentados por níveis de DAS e NES, estão incorporados todos os cargos equivalentes a cada nível.
 
-
-| Cargos em Comissão e Funções Comissionadas do Poder Executivo Federal | FCPE   | Cargos em Comissão das Agências Reguladoras          | Cargos em Comissão e Funções Comissionadas das Instituições Federais de Ensino | FCE e CCE |
-|-----------------------------------------------------------------------|--------|-------------------------------------------------------|-------------------------------------------------------------------------------|----------|
-| NES   |        |              |           | Nível 18 |       
-| DAS-6 |        | CD-I e CD-II | CD-1      | Nível 17 | 
-| DAS-5 |        |  CGE-I       | CD-2      | Nível 15 e 16|  
-| DAS-4 | FCPE-4 | CGE-II, CGE-III, CA-I, CA-II e CCT-V             | CD-3          | Nível 13 e 14 |
-| DAS-3 | FCPE-3 | CGE-IV e CCT-IV                                          | CD-4                 | Nível 10 a 12 |
-| DAS-2 | FCPE-2 | CA-III e CCT-III                                      |          | Nível 7 a 9  |
-| DAS-1 | FCPE-1 | CAS-I, CAS-II, CCT-II e CCT-I             |             | Nível 5 e 6  |
+| Cargos em Comissão e Funções Comissionadas do Poder Executivo Federal | FCPE   | Cargos em Comissão das Agências Reguladoras | Cargos em Comissão e Funções Comissionadas das Instituições Federais de Ensino | FCE e CCE     |
+|-----------------|------------|------------|--------------------|------------|
+| NES                                                                   |        |                                             |                                                                                | Nível 18      |
+| DAS-6                                                                 |        | CD-I e CD-II                                | CD-1                                                                           | Nível 17      |
+| DAS-5                                                                 |        | CGE-I                                       | CD-2                                                                           | Nível 15 e 16 |
+| DAS-4                                                                 | FCPE-4 | CGE-II, CGE-III, CA-I, CA-II e CCT-V        | CD-3                                                                           | Nível 13 e 14 |
+| DAS-3                                                                 | FCPE-3 | CGE-IV e CCT-IV                             | CD-4                                                                           | Nível 10 a 12 |
+| DAS-2                                                                 | FCPE-2 | CA-III e CCT-III                            |                                                                                | Nível 7 a 9   |
+| DAS-1                                                                 | FCPE-1 | CAS-I, CAS-II, CCT-II e CCT-I               |                                                                                | Nível 5 e 6   |
 
 Este relatório considera como Cargos de Média Liderança, os cargos em comissão do Grupo-Direção e Assessoramento Superiores (DAS) do nível 1 a 4 e seus equivalentes. Já os cargos em comissão do Grupo-Direção e Assessoramento Superiores (DAS) do nível 5 e 6, os Cargos de Natureza Especial (NES) e seus equivalentes são considerados como Cargos de Alta Liderança.
 
-
 ## 3. Dados
-
-
 
 ```{r leitura das bases, warning=FALSE}
 library(tidyverse)
 library(readxl)
+library(scales)
 df <- read_excel("../data/BaseDados_20230720.xlsx", 
     sheet = "Base_jun23")
 
@@ -150,7 +146,6 @@ perc_fem <- tab_3.2 |> filter(Sexo == "Fem") |> summarise(perc=mean(Percentual))
 
 ```
 
-
 ### 3.1 Ocupação de Cargos de Liderança
 
 Analisando a composição dos ocupantes de Cargos de Liderança sob o recorte do gênero, observa-se que a ocupação feminina corresponde, em média, a `r scales::percent(perc_fem$perc)` do total. O gráfico 1 apresenta o quantitativo de ocupantes de Cargos de Liderança em junho de 2023, considerando os cargos em comissão do Grupo-Direção e Assessoramento Superiores (DAS) e seus equivalentes.
@@ -165,22 +160,41 @@ grafico_3.1 <- tab_3.1 %>%
   )
   ) +
   geom_bar(stat = "identity") +
-  geom_text(aes(label = abs(Total)), vjust = -100, nudge_y = 20, size = 3, color = "black") +  # Ajustando a posição e tamanho dos rótulos de dados
+  # geom_text(
+  #   aes(label = label_number(scale = 1,
+  #                            big.mark = ".",
+  #                            decimal.mark = ",")(abs(Total))),
+  #   size = 3, color = "white", position = position_stack(vjust = 0.5)
+  # ) +
+  geom_text(aes(
+    label = label_number(
+      scale = 1,
+      big.mark = ".",
+      decimal.mark = ",")(abs(Total)), y = Total +50),
+    #position = position_dodge(width = 0.9),
+    hjust = ifelse(tab_3.1$Total < 0, 1.5, -0.1),
+   # nudge_y = 20,
+    size = 3,
+    color = "black") +  # Ajustando a posição e tamanho dos rótulos de dados
   scale_fill_manual(values = c( "#004580", "#ffaf51")) +
   scale_y_continuous(breaks=seq(-7000,7000,2500),
-                     limits = c(-7000, 8000),                     labels=paste0(abs(seq(-7000,7000,2500))))+
+                     limits = c(-7500, 8000),                     labels=paste0(abs(seq(-7000,7000,2500))))+
   coord_flip()+
   labs(
-    title = "Gráfico 1 – Quantitativo de ocupantes de cargos de liderança em jun/2023",
+    title = "Gráfico 1 – Quantitativo de ocupantes de cargos de liderança\nem jun/2023",
     x="",
     y = "",
     fill = "",
-    caption = "\n\nFonte: https://www.gov.br/servidor/pt-br/observatorio-de-pessoal-govbr/"
+    caption = "Fonte: https://www.gov.br/servidor/pt-br/observatorio-de-pessoal-govbr/"
   ) +
-  theme_minimal()+ theme(text = element_text(size = 10)) 
-
-plotly::ggplotly(grafico_3.1) |> 
-  plotly::layout(legend = list(orientation = "h", xanchor = "center", yanchor = "bottom", x = 0.5, y = -0.2))
+  theme_minimal()+ 
+  theme(
+    text = element_text(size = 10),
+    legend.position = "bottom"  # Adicionando a posição da legenda
+  )
+grafico_3.1
+# plotly::ggplotly(grafico_3.1) |> 
+# plotly::layout(legend = list(orientation = "h", xanchor = "center", yanchor = "bottom", x = 0.5, y = -0.2))
 
 ```
 
@@ -192,23 +206,39 @@ grafico_3.2 <- tab_3.2 %>%
     fill = Sexo
   )) +
   geom_bar(stat = "identity") +
-  geom_text(aes(label = paste0(abs(Percentual*100), "%")), size = 3, color = "black") +  # Ajustando a posição e tamanho dos rótulos de dados
+  geom_text(
+    aes(label = label_number(scale = 1e2, suffix = '%')(abs(Percentual))),
+    size = 3, color = "white", position = position_stack(vjust = 0.5)
+  ) +
+  # geom_text(aes(
+  #     label = label_number(
+  #     scale = 1e2,
+  #     suffix = '%',
+  #     big.mark = ".",
+  #     decimal.mark = ",")(abs(Percentual)), y = Percentual + 0.10), 
+  #      hjust = ifelse(tab_3.2$Percentual < 0, 2.5,-0.1),
+  #           size = 3, 
+  #           color = "black") +  # Ajustando a posição e tamanho dos rótulos de dados
   scale_fill_manual(values = c("#004580", "#ffaf51")) +
   scale_y_continuous(breaks=seq(-1,1,0.25),
                      limits = c(-0.95, 0.95),
                      labels=paste0(abs(seq(-100,100,25)), "%"))+
   coord_flip()+
-  theme_minimal()
+  theme_minimal()+ theme(
+    #text = element_text(size = 10),
+    legend.position = "bottom"  # Adicionando a posição da legenda
+  )
 
 grafico_3.2 <- grafico_3.2 +
   labs(
-    title = "Gráfico 2 – Percentual de ocupação de cargos de liderança por gênero em jun/2023",
-    subtitle = "\n\nGênero",
+    title = "Gráfico 2 – Percentual de ocupação de cargos de liderança por gênero",
+    subtitle = "Jun/2023",
     x="",
     y = "",
     fill = "",
-    caption = "\n\nFonte: https://www.gov.br/servidor/pt-br/observatorio-de-pessoal-govbr/serie-relatorios-gerenciais-genero"
+    caption = "Fonte: https://www.gov.br/servidor/pt-br/observatorio-de-pessoal-govbr"
   ) 
+#grafico_3.2
 
 plotly::ggplotly(grafico_3.2) |> plotly::layout(yaxis = list(ticksuffix = "%")) |> plotly::layout(legend = list(orientation = "h", xanchor = "center", yanchor = "bottom", x = 0.5, y = -0.2))
 ```
@@ -278,7 +308,6 @@ tab_3.4 <- df |> group_by(CATEGORIA) |>
     )
 ```
 
-
 Comparando-se os dados do período atual (junho/2023) com dados de outro período semelhante (junho/2019), é possível observar que o percentual de servidoras do sexo feminino em relação à totalidade da força de trabalho passou de 46% em 2019 para 45% em 2023. Todavia, o percentual de ocupação feminina de cargos de Alto Liderança aumentou, de 25% para 34%. E, nos cargos de Média Liderança aumentou de 40% para 41%.
 
 ```{r , fig.width= 8}
@@ -290,26 +319,41 @@ grafico_3.3 <- tab_3.3 %>%
   )
   ) +
   geom_bar(stat = "identity", width =  0.4) +
-  geom_text(aes(label = paste0(abs(Percentual*100), "%")),  size = 3, color = "black") +
+  # geom_text(aes(
+  #     label = label_number(
+  #     scale = 1e2,
+  #     suffix = '%',
+  #     big.mark = ".",
+  #     decimal.mark = ",")(abs(Percentual)), y = Percentual + 0.10), 
+  #      hjust = ifelse(tab_3.2$Percentual < 0, 2.5,-0.1),
+  #           size = 3, 
+  #           color = "black") + 
+  geom_text(
+    aes(label = label_number(scale = 1e2, suffix = '%')(abs(Percentual))),
+    size = 3, color = "white", position = position_stack(vjust = 0.5)
+  ) +
   scale_fill_manual(values = c("#ffaf51","#004580")) +
   scale_y_continuous(breaks=seq(-1,1,0.25),
                      limits = c(-0.95, 0.95),
                      labels=paste0(abs(seq(-100,100,25)), "%"))+
   coord_flip()+
-  theme_minimal()
+  theme_minimal() + theme(
+    #text = element_text(size = 10),
+    legend.position = "bottom"  # Adicionando a posição da legenda
+  )
 
 grafico_3.3 <- grafico_3.3 +
   labs(
-    title = "Gráfico 3 – Percentual de ocupação de cargos de liderança em junho/2019",
+    title = "Gráfico 3 – Percentual de ocupação de cargos de liderança",
+    subtitle = "Jun/2019",
     x="",
     y = "",
     fill = '',
-    caption = "\n\nFonte: https://www.gov.br/servidor/pt-br/observatorio-de-pessoal-govbr/serie-relatorios-gerenciais-genero"
+    caption = "Fonte: https://www.gov.br/servidor/pt-br/observatorio-de-pessoal-govbr/"
   ) 
-
-plotly::ggplotly(grafico_3.3) |> plotly::layout(yaxis = list(ticksuffix = "%"))
+ #grafico_3.3
+ plotly::ggplotly(grafico_3.3) |> plotly::layout(yaxis = list(ticksuffix = "%"))
 ```
-
 
 ```{r, fig.width= 8}
 grafico_3.4 <- tab_3.4 %>%
@@ -320,23 +364,32 @@ grafico_3.4 <- tab_3.4 %>%
   )
   ) +
   geom_bar(stat = "identity", width = 0.4) +
-  geom_text(aes(label = paste0(abs(Percentual*100), "%")),  size = 3, color = "black") +
+  geom_text(
+    aes(label = label_number(scale = 1e2, suffix = '%')(abs(Percentual))),
+    size = 3, color = "white", position = position_stack(vjust = 0.5)
+  ) +
+  # geom_text(aes(label = paste0(abs(Percentual*100), "%")), 
+  #           hjust = ifelse(tab_3.4$Percentual < 0, 1.1,-0.1),
+  #           size = 3, color = "black") +
   scale_fill_manual(values = c("#ffaf51","#004580")) +
   scale_y_continuous(breaks=seq(-1,1,0.25),
                      limits = c(-0.95, 0.95),
                      labels=paste0(abs(seq(-100,100,25)), "%"))+
   coord_flip()+
-  theme_minimal()
+  theme_minimal() + theme(
+    #text = element_text(size = 10),
+    legend.position = "bottom"  # Adicionando a posição da legenda
+  )
 
 grafico_3.4 <- grafico_3.4 +
   labs(
-    title = "Gráfico 4 – Percentual de ocupação de cargos de liderança em junho/2023",
+    title = "Gráfico 4 – Percentual de ocupação de cargos de liderança",
+    subtitle = "Jun/2023",
     x="",
     y = "",
     fill = "",
-    caption = "\n\nFonte: https://www.gov.br/servidor/pt-br/observatorio-de-pessoal-govbr/serie-relatorios-gerenciais-genero"
-  ) 
-
+    caption = "Fonte: https://www.gov.br/servidor/pt-br/observatorio-de-pessoal-govbr") 
+#grafico_3.4 
 plotly::ggplotly(grafico_3.4) |> plotly::layout(yaxis = list(ticksuffix = "%"))
 ```
 
@@ -361,7 +414,6 @@ tab_3.5 <- df |> group_by(SEXO) |>
   rename(Filhos = name)
 ```
 
-
 Das mulheres em cargos de liderança, apenas 38% têm filhos menores de idade. Entre os homens, esse percentual sobe para de 47%. Estatisticamente, a chance de um homem em cargo de liderança ter filhos menores de idade é 1,5 vezes maior do que uma mulher nas mesmas condições ter filhos menores de idade.
 
 ```{r, fig.width= 8}
@@ -373,6 +425,22 @@ grafico_3.5 <- tab_3.5 %>%
   )
   ) +
   geom_bar(stat = "identity", width = 0.4) +
+  geom_text(
+    aes(label = label_number(scale = 1e2, suffix = '%')(Percentual)),
+    size = 3, color = "white", position = position_stack(vjust = 0.5)
+  )+
+    # geom_text(aes(
+    #   label = label_number(
+    #   scale = 1e2,
+    #   suffix = '%',
+    #   big.mark = ".",
+    #   decimal.mark = ",")(abs(Percentual)),
+    #   y = ifelse(
+    #     Filhos == "Sem filhos menores de idade", Percentual - 0.40, Percentual + 0.35)
+    #     ),
+       #hjust = -0.1,
+            # size = 3,
+            # color = "white") +
   # geom_text(aes(label = paste0(abs(Percentual*100), "%")),
   #           size = 3, position = "identity",
   #           color = "white") +
@@ -381,17 +449,21 @@ grafico_3.5 <- tab_3.5 %>%
                      #limits = c(-0.95, 0.95),
                      labels=paste0(abs(seq(0,100,25)), "%"))+
   #coord_flip()+
-  theme_minimal()
+  theme_minimal() + theme(
+    #text = element_text(size = 10),
+    legend.position = "bottom"  # Adicionando a posição da legenda
+  )
 
 grafico_3.5 <- grafico_3.5 +
   labs(
-    title = " Gráfico 5 – Percentual de líderes com filhos menores de idade (junho/2023)",
+    title = " Gráfico 5 – Percentual de líderes com filhos menores de idade ",
+    subtitle = "Junho/2023",
     x="",
     y = "",
     fill = "",
-        caption = "\n\nFonte: https://www.gov.br/servidor/pt-br/observatorio-de-pessoal-govbr/serie-relatorios-gerenciais-genero"
+        caption = "Fonte: https://www.gov.br/servidor/pt-br/observatorio-de-pessoal-govbr/"
   ) 
-
+grafico_3.5
 plotly::ggplotly(grafico_3.5) |> 
   plotly::layout(yaxis = list(ticksuffix = "%")) |> 
   plotly::layout(legend = list(orientation = "h", xanchor = "center", yanchor = "bottom", x = 0.5, y = -0.2))
@@ -415,7 +487,6 @@ tab_3.6 <- as_tibble(tab_3.6) |>
 tab_3.6$`ESTADO CIVIL` <- fct_reorder(tab_3.6$`ESTADO CIVIL`, tab_3.6$Percentual)
 ```
 
-
 50% das mulheres em cargos de liderança são casadas. Entre os homens, esse percentual sobe para 68%.
 
 ```{r}
@@ -427,11 +498,15 @@ grafico_3.6 <- tab_3.6 %>%
   )
   ) +
   geom_bar(stat = "identity", width = 0.4) +
+  geom_text(
+    aes(label = label_number(scale = 1e2, suffix = '%')(Percentual)),
+    size = 3, color = "white", position = position_stack(vjust = 0.5)
+  ) + 
   scale_fill_manual(values = c("#808080", "#a0a0a0", "#c0c0c0", "#dfdfdf", "#ffaf51")) +
   scale_y_continuous(breaks=seq(0,1,0.2),
                      #limits = c(0, 1),
                      labels=paste0(abs(seq(0,100,20)), "%"))+
-  #coord_flip()+
+  coord_flip()+
   theme_minimal()
 
 grafico_3.6 <- grafico_3.6 +
@@ -441,9 +516,9 @@ grafico_3.6 <- grafico_3.6 +
     x="",
     y = "",
     fill = "Estado Civil",
-    caption = "\n\nFonte: https://www.gov.br/servidor/pt-br/observatorio-de-pessoal-govbr/serie-relatorios-gerenciais-genero"
+    caption = "Fonte: https://www.gov.br/servidor/pt-br/observatorio-de-pessoal-govbr/"
   )
-
+#grafico_3.6
 plotly::ggplotly(grafico_3.6) |> 
   plotly::layout(yaxis = list(ticksuffix = "%")) |> 
   plotly::layout(legend = list(orientation = "h", xanchor = "center", yanchor = "bottom", x = 0.5, y = -0.2))
@@ -505,14 +580,20 @@ tab_3.7 <- dplyr::bind_rows(tab_3.7_2019, tab_3.7_2023) |>
   )
 ```
 
-
 A presença de mulheres negras e indígenas em cargos de liderança aumentou entre 2019 e 2023. Assim como a presença de homens negros e indígenas nesses mesmos cargos.
 
 ```{r, fig.width= 8, fig.height=6}
 grafico_3.7 <- ggplot(tab_3.7) +
   aes(x = Ano, y = Percentual, fill = Etnia) +
-  geom_col(width = 0.4) +
-  scale_fill_manual(values = c("#f9a830", "#ac670c", "#f2aa49", "#4122d9","#dfdfdf", "#0f04fc")) +
+  geom_bar(stat = "identity", width = 0.5) +
+  # geom_text(
+  #   aes(label = label_number(
+  #     scale = 1e2, 
+  #     big.mark = ".",
+  #     decimal.mark = ",", suffix = "%")(Percentual)),
+  #   size = 3, color = "white", position = position_stack(vjust = 0.5)
+  # ) +
+  scale_fill_manual(values = c("#f9a830", "#ac670c", "#f2aa49", "#0b29bd","#dfdfdf", "#6eaadb")) +
   scale_y_continuous(breaks=seq(0,1,0.2),
                      #limits = c(0, 1),
                      labels=paste0(abs(seq(0,100,20)), "%"))+
@@ -530,7 +611,7 @@ grafico_3.7 <- grafico_3.7 +
     fill = "",
     caption = "\n\nFonte: https://www.gov.br/servidor/pt-br/observatorio-de-pessoal-govbr/serie-relatorios-gerenciais-genero"
   )
-
+#grafico_3.7
 plotly::ggplotly(grafico_3.7) |> 
   plotly::layout(legend = list(orientation = "h", xanchor = "center", yanchor = "bottom", x = 0.5, y = -0.2))
 ```
@@ -604,6 +685,7 @@ tabela_Mas |>
 
 ### 3.5 Idade
 
+
 A média de idade entre as mulheres ocupantes de cargo de liderança é menor que a dos homens, qualquer que seja o nível de liderança.
 
 ```{r,  fig.width= 8}
@@ -614,8 +696,11 @@ tab_3.8 <- df |> group_by(EQUIVALENCIA, SEXO) |>
 
 grafico_3.8 <- ggplot(tab_3.8) +
   aes(x = EQUIVALENCIA, y = Média, fill = SEXO) +
-  geom_col(position = "dodge") +
- # geom_text(aes(label = Média),hjust = -0.5, size = 3, color = "black") +
+  geom_bar(stat = "identity", width = 0.5) +
+ geom_text(
+    aes(label = label_number(scale = 1, suffix = " anos")(Média)),
+    size = 3, color = "white", position = position_stack(vjust = 0.5)
+  ) +
   scale_fill_manual(values = c("#ffaf51","#004580"))+
   #scale_fill_hue(direction = 1) +
   labs(
@@ -627,7 +712,7 @@ grafico_3.8 <- ggplot(tab_3.8) +
   coord_flip() +
   theme_minimal() +
   theme(legend.position = "bottom")
-
+#grafico_3.8
 plotly::ggplotly(grafico_3.8) |> 
   plotly::layout(legend = list(orientation = "h", xanchor = "center", yanchor = "bottom", x = 0.5, y = -0.2))
 ```
@@ -644,7 +729,11 @@ tab_3.9 <- df |> group_by(CATEGORIA, SEXO) |>
 
 grafico_3.9 <- ggplot(tab_3.9) +
   aes(x = CATEGORIA, y = media, fill = SEXO) +
-  geom_col(position = "dodge") +
+  geom_bar(stat = "identity", width = 0.5) +
+ geom_text(
+    aes(label = label_number(scale = 1, suffix = " anos")(media)),
+    size = 3, color = "white", position = position_stack(vjust = 0.5)
+  ) +
   scale_fill_manual(values = c("#ffaf51","#004580"))+
   #scale_fill_hue(direction = 1) +
   labs(
@@ -656,15 +745,14 @@ grafico_3.9 <- ggplot(tab_3.9) +
   coord_flip() +
   theme_minimal() +
   theme(legend.position = "bottom")
-
+#grafico_3.9
 plotly::ggplotly(grafico_3.9) |> 
   plotly::layout(legend = list(orientation = "h", xanchor = "center", yanchor = "bottom", x = 0.5, y = -0.2))
 ```
 
-
 ### 3.6 Média de Idade x Filhos Menores de Idade
 
-Entre os líderes com filhos menores de idade, a média de idade das mulheres é 43 anos  e a dos homens, 46 anos. Já entre os líderes sem filhos menores de idade, a média de idade das mulheres se aproxima mais da dos homens, 50 para mulheres e 51 para homens.
+Entre os líderes com filhos menores de idade, a média de idade das mulheres é 43 anos e a dos homens, 46 anos. Já entre os líderes sem filhos menores de idade, a média de idade das mulheres se aproxima mais da dos homens, 50 para mulheres e 51 para homens.
 
 ```{r, fig.width= 10}
 tab_3.10 <- df |> group_by(EQUIVALENCIA, SEXO, `DEPENDENTE MENOR DE IDADE?`) |> 
@@ -674,7 +762,11 @@ tab_3.10 <- df |> group_by(EQUIVALENCIA, SEXO, `DEPENDENTE MENOR DE IDADE?`) |>
 
 grafico_3.10 <- ggplot(tab_3.10) +
   aes(x = EQUIVALENCIA, y = media, fill = `DEPENDENTE MENOR DE IDADE?`) +
-  geom_col(position = "dodge") +
+  geom_bar(stat = "identity", width = 0.5) +
+ geom_text(
+    aes(label = label_number(scale = 1, suffix = " anos")(media)),
+    size = 3, color = "black", position = position_stack(vjust = 0.5)
+  ) +
   scale_fill_brewer(palette = "Greens", direction = 1) +
   labs(
     x = "",
@@ -688,11 +780,11 @@ grafico_3.10 <- ggplot(tab_3.10) +
   facet_wrap(vars(SEXO))+
    theme(text = element_text(size = 10))  # Ajustando o tamanho padrão da fonte do gráfico
 
-
+#grafico_3.10
 plotly::ggplotly(grafico_3.10) |> 
   plotly::layout(legend = list(orientation = "h", xanchor = "center", yanchor = "bottom", x = 0.5, y = -0.2))
 ```
- 
+
 Analisando os dados agrupados por Média e Alta liderança, é possível observar a mesma relação entre média de idade, gênero e existência de filhos menores de idade.
 
 ```{r, ,fig.width= 10}
@@ -703,7 +795,11 @@ tab_3.11 <- df |> group_by(CATEGORIA, SEXO, `DEPENDENTE MENOR DE IDADE?`) |>
 
 grafico_3.11 <- ggplot(tab_3.11) +
   aes(x = CATEGORIA, y = media, fill = `DEPENDENTE MENOR DE IDADE?`) +
-  geom_col(position = "dodge") +
+  geom_bar(stat = "identity", width = 0.5) +
+ geom_text(
+    aes(label = label_number(scale = 1, suffix = " anos")(media)),
+    size = 3, color = "black", position = position_stack(vjust = 0.5)
+  ) +
   scale_fill_brewer(palette = "Greens", direction = 1) +
   labs(
     x = "",
@@ -725,7 +821,7 @@ plotly::ggplotly(grafico_3.11) |>
 
 Dentre o total de servidoras do sexo feminino, o percentual de PCD é de 1,1%. Analisando apenas as mulheres em cargos de Média Liderança, esse percentual vai para 0,9%. E, entre as mulheres com cargos de Alta Liderança, esse percentual cai para 0,5%.
 
-```{r} 
+```{r}
 tab_3.11 <- df_pcd |> mutate(
   PCD = case_when( 
       `DEFICIÊNCIA FÍSICA` != "S/Info"  ~ "PCD",
@@ -749,8 +845,7 @@ mutate(
  
 ```
 
-
-```{r} 
+```{r}
 df_pcd <- df |> 
   mutate(
       PCD = case_when( 
@@ -820,9 +915,9 @@ ggplot( ) +
 
 ### 3.8 Escolaridade
 
-No conjunto total de servidores do Governo Federal, 78% dos homens e 85% das mulheres possuem escolaridade de nível superior ou maior. 
+No conjunto total de servidores do Governo Federal, 78% dos homens e 85% das mulheres possuem escolaridade de nível superior ou maior.
 
-Entre os ocupantes de cargos de Alta Liderança, 98% possuem escolaridade de nível superior ou maior, independente do gênero. 
+Entre os ocupantes de cargos de Alta Liderança, 98% possuem escolaridade de nível superior ou maior, independente do gênero.
 
 Contudo, entre os ocupantes de cargos de Média Liderança, o percentual de mulheres com escolaridade de nível superior ou maior é ligeiramente maior (90%) que os ocupantes do sexo masculino (87%).
 
@@ -836,26 +931,19 @@ Expandindo a análise para o total de servidores, observamos que apenas 8 dos 1.
 
 ## 4. Fontes e metodologia Base de Dados
 
-A fonte primária para a obtenção das informações apresentadas é o
-Sistema Integrado de Administração de Pessoal (SIAPE) e no [**Painel
-Estatístico de Pessoal
-(PEP).**](http://painel.pep.planejamento.gov.br){target="_blank"}
+A fonte primária para a obtenção das informações apresentadas é o Sistema Integrado de Administração de Pessoal (SIAPE) e no [**Painel Estatístico de Pessoal (PEP).**](http://painel.pep.planejamento.gov.br){target="_blank"}
 
 Outras fontes:
 
-[**Convenção
-OIT**](http://www.planalto.gov.br/ccivil_03/_Ato2019-2022/2019/Decreto/D10088.htm#art5){target="_blank"}
+[**Convenção OIT**](http://www.planalto.gov.br/ccivil_03/_Ato2019-2022/2019/Decreto/D10088.htm#art5){target="_blank"}
 
-[**Banco
-Mundial**](https://www.worldbank.org/pt/news/press-release/2019/02/27/despite-gains-women-face-setbacks-in-legal-rights-affecting-work){target="_blank"}
+[**Banco Mundial**](https://www.worldbank.org/pt/news/press-release/2019/02/27/despite-gains-women-face-setbacks-in-legal-rights-affecting-work){target="_blank"}
 
-[**Constituição
-Federal**](http://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm){target="_blank"}
+[**Constituição Federal**](http://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm){target="_blank"}
 
 ## 5. Revisões
 
-A revisões são realizadas anualmente, conforme necessário, como
-resultado de atualização de base de dados.
+A revisões são realizadas anualmente, conforme necessário, como resultado de atualização de base de dados.
 
 ## 6. Institucional
 
@@ -877,13 +965,10 @@ resultado de atualização de base de dados.
 
 Coordenação-Geral de Informações Gerenciais -- CGINF
 
-Departamento de Soluções Digitais e Informações Gerenciais -- Ministério
-da Economia
+Departamento de Soluções Digitais e Informações Gerenciais -- Ministério da Economia
 
 Esplanada dos Ministério, Bloco C, 9º andar, sala 940
 
 70297-400 -- Brasília/DF
 
-Tel: (61) 2020-1179 E-mail:
-[sgp.cginf\@economia.gov.br](mailto:sgp.cginf@economia.gov.br){.email}
-
+Tel: (61) 2020-1179 E-mail: [sgp.cginf\@economia.gov.br](mailto:sgp.cginf@economia.gov.br){.email}
